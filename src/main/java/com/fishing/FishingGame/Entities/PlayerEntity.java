@@ -1,14 +1,13 @@
 package com.fishing.FishingGame.Entities;
 
-import com.fishing.FishingGame.Game.Fish;
-import com.fishing.FishingGame.Game.Player;
-import com.fishing.FishingGame.Game.Rod;
+import com.fishing.FishingGame.DomainEntities.Fish;
+import com.fishing.FishingGame.DomainEntities.Player;
+import com.fishing.FishingGame.DomainEntities.Rod;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Table(name = "Users")
 @Entity

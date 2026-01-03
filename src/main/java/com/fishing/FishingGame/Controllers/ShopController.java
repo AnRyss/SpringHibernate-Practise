@@ -1,8 +1,7 @@
 package com.fishing.FishingGame.Controllers;
 
 import com.fishing.FishingGame.Entities.PlayerEntity;
-import com.fishing.FishingGame.Game.Player;
-import com.fishing.FishingGame.Services.PlayerRepository;
+import com.fishing.FishingGame.Repositories.PlayerRepository;
 import com.fishing.FishingGame.Services.ShopService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

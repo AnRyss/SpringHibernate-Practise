@@ -1,11 +1,11 @@
 package com.fishing.FishingGame.ENUMS;
 
-public enum FISHRARITY {
+public enum Fish_Rarity {
     COMMON(70),
     UNCOMMON(20),
     EPIC(5),
     LEGENDARY(5);
 
-    FISHRARITY(long chance) {
+    Fish_Rarity(long chance) {
     }
 }

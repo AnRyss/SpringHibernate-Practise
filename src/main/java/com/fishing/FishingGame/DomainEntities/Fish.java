@@ -1,16 +1,16 @@
-package com.fishing.FishingGame.Game;
+package com.fishing.FishingGame.DomainEntities;
 
-import com.fishing.FishingGame.ENUMS.FISHRARITY;
+import com.fishing.FishingGame.ENUMS.Fish_Rarity;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
 public record Fish(
         String name,
         double size,
-        FISHRARITY rarity,
+        Fish_Rarity rarity,
         double cost)
 {
-    public Fish(String name, double size, FISHRARITY rarity, double cost){
+    public Fish(String name, double size, Fish_Rarity rarity, double cost){
 
      /*switch (rarity) {
          case LEGENDARY -> this.cost = 200000;

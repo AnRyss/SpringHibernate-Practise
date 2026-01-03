@@ -1,24 +1,24 @@
-package com.fishing.FishingGame.Game;
+package com.fishing.FishingGame.DomainEntities;
 
-import com.fishing.FishingGame.ENUMS.RODTIER;
+import com.fishing.FishingGame.ENUMS.Rod_Tier;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class Rod {
-    private RODTIER rodtier;
+    private Rod_Tier rodTier;
     private double durability;
 
-    public Rod(RODTIER rodtier) {
-        this.rodtier = rodtier;
+    public Rod(Rod_Tier rodTier) {
+        this.rodTier = rodTier;
         this.durability = 100;
     }
 private Rod(){}
-    public RODTIER getRodtier() {
-        return rodtier;
+    public Rod_Tier getRodtier() {
+        return rodTier;
     }
 
-    public void setRodtier(RODTIER rodtier) {
-        this.rodtier = rodtier;
+    public void setRodtier(Rod_Tier rodTier) {
+        this.rodTier = rodTier;
     }
 
     public double getDurability() {

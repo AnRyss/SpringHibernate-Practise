@@ -1,10 +1,7 @@
-package com.fishing.FishingGame.Game;
+package com.fishing.FishingGame.DomainEntities;
 
-import com.fishing.FishingGame.ENUMS.RODTIER;
-import com.fishing.FishingGame.Entities.PlayerEntity;
-import org.hibernate.type.descriptor.java.LocalDateTimeJavaType;
+import com.fishing.FishingGame.ENUMS.Rod_Tier;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -16,14 +13,21 @@ public class Player {
     private double money;
     private List<Fish> FishInventory = new ArrayList<>();
 
-    public Player() {
-        this.uuid = UUID.randomUUID();
-        this.rod = new Rod(RODTIER.COMMON);
-        this.luck = 1;
-        this.money = 0;
+    public Player(UUID uuid) {
+
+        this.uuid = uuid;
+    }
+    public static Player Beginner(){
+        return new Player(
+                UUID.randomUUID(),
+                new Rod(Rod_Tier.COMMON),
+                1,
+                0,
+                new ArrayList<Fish>()
+        );
     }
 
-    public Player(Rod rod, UUID uuid, double luck, double money, List<Fish> fishInventory) {
+    public Player( UUID uuid,Rod rod, double luck, double money, List<Fish> fishInventory) {
         this.rod = rod;
         this.uuid = uuid;
         this.luck = luck;

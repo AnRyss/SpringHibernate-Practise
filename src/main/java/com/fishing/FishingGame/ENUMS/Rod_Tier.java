@@ -1,6 +1,6 @@
 package com.fishing.FishingGame.ENUMS;
 
-public enum RODTIER {
+public enum Rod_Tier {
 
     COMMON(500, "Обычная"),
     UNCOMMON(1500, "Необычная"),
@@ -8,6 +8,6 @@ public enum RODTIER {
     LEGENDARY(1500000, "Легендарная"),
     ADMIN(0, "Админская");
 
-    RODTIER(double defaultUpgradePrice, String displayName) {
+    Rod_Tier(double defaultUpgradePrice, String displayName) {
     }
 }

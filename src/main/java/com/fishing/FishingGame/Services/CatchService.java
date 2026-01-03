@@ -1,8 +1,9 @@
 package com.fishing.FishingGame.Services;
 
-import com.fishing.FishingGame.ENUMS.FISHRARITY;
+import com.fishing.FishingGame.ENUMS.Fish_Rarity;
 import com.fishing.FishingGame.Entities.PlayerEntity;
-import com.fishing.FishingGame.Game.Fish;
+import com.fishing.FishingGame.DomainEntities.Fish;
+import com.fishing.FishingGame.Repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -52,7 +53,7 @@ private final ScheduledExecutorService executor;
     return CompletableFuture.completedFuture(startMessage);
     }
  private  Fish catchFish(){
-      return new Fish("123",2, FISHRARITY.EPIC,2);
+      return new Fish("123",2, Fish_Rarity.EPIC,2);
  }
 
 
