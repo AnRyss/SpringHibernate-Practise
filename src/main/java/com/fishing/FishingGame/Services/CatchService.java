@@ -1,13 +1,14 @@
 package com.fishing.FishingGame.Services;
 
-import com.fishing.FishingGame.ENUMS.Fish_Rarity;
 import com.fishing.FishingGame.Entities.PlayerEntity;
 import com.fishing.FishingGame.DomainEntities.Fish;
 import com.fishing.FishingGame.Repositories.PlayerRepository;
+import com.fishing.FishingGame.Util.FishGenerator;
+import com.fishing.FishingGame.Util.LuckService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.Transactional;
+
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
@@ -24,7 +25,6 @@ private final ScheduledExecutorService executor;
         this.executor = executor;
     }
 
-@Transactional
     public CompletableFuture<String> startCatch(UUID uuid) {
         PlayerEntity user = repository.findById(uuid).orElseThrow(() -> new NullPointerException("Invalid user"));
     if (!user.getRod().isFishable()) {
@@ -37,10 +37,10 @@ private final ScheduledExecutorService executor;
 
        if (user.getRod().isFishable())   {
            executor.schedule(() -> {
-
+               // Можно было сделать через DI EntityManager.unwrap(Session.class).merge(user), но имхо overcoding.
                 PlayerEntity freshuser = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("Invalid user"));
 
-                   Fish fish = catchFish();
+                   Fish fish = FishGenerator.generate();
                    freshuser.getFishInventory().add(fish);
                    repository.save(freshuser);
 
@@ -52,9 +52,6 @@ private final ScheduledExecutorService executor;
 
     return CompletableFuture.completedFuture(startMessage);
     }
- private  Fish catchFish(){
-      return new Fish("123",2, Fish_Rarity.EPIC,2);
- }
 
 
 }

@@ -24,6 +24,9 @@ private final Fish_Rarity rarity;
     public Fish createFish() {
         return new Fish(this.name, this.baseWeight, this.rarity, this.basePrice);
     }
+    public Fish_Rarity getRarity(){
+        return rarity;
+    }
 }
 
 

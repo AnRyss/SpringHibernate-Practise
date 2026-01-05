@@ -6,10 +6,11 @@ import com.fishing.FishingGame.DomainEntities.Fish;
 import com.fishing.FishingGame.DomainEntities.Rod;
 import com.fishing.FishingGame.Repositories.PlayerRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
-//import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class ShopService {
@@ -22,18 +23,12 @@ public class ShopService {
     public Boolean upgradeRod(UUID playerUuid) {
         double moneyneeded =0;
         PlayerEntity user = repository.findById(playerUuid).orElseThrow(() -> new IllegalArgumentException("Illegal id"));
-        switch (user.getRod().getRodtier()){
-            case Rod_Tier.COMMON -> moneyneeded = 500;
-            case Rod_Tier.UNCOMMON -> moneyneeded = 1500;
-            case Rod_Tier.EPIC -> moneyneeded = 5000;
-            case LEGENDARY -> moneyneeded = 1500000;
-            case ADMIN -> {
+        moneyneeded = user.getRod().getRodtier().getPrice();
 
-            }
-        }
-        int upgradedenuminex = user.getRod().getRodtier().ordinal()+1;
-        Rod roduprgared = new Rod(Rod_Tier.values()[upgradedenuminex]);
-        if (moneyneeded > user.getMoney()) user.setRod(roduprgared);
+        int upgradedenumindex = user.getRod().getRodtier().ordinal()+1;
+        Rod roduprgared = new Rod(Rod_Tier.values()[upgradedenumindex]);
+        if (moneyneeded > user.getMoney())
+            user.setRod(roduprgared);
         return (moneyneeded > user.getMoney());
 
     }
