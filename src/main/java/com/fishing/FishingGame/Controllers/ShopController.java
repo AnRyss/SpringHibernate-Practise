@@ -14,20 +14,15 @@ import java.util.UUID;
 @RestController
 public class ShopController {
     private final ShopService shopService;
-    private final PlayerRepository repository;
-
     public ShopController(ShopService shopService, PlayerRepository repository) {
         this.shopService = shopService;
-        this.repository = repository;
     }
     @PostMapping("/upgrade_rod")
     public ResponseEntity<Boolean> upgradeRod(@PathVariable UUID uuid){
-       PlayerEntity player = repository.findById(uuid).orElseThrow(()-> new IllegalArgumentException("Invalid id"));
-      return ResponseEntity.ok(  shopService.upgradeRod(uuid));
+      return ResponseEntity.ok(shopService.upgradeRod(uuid));
     }
     @PostMapping("/sell_fish")
     public  ResponseEntity<Boolean> sellFish(@PathVariable UUID uuid){
-        PlayerEntity player = repository.findById(uuid).orElseThrow(()-> new IllegalArgumentException("Invalid id"));
         return  ResponseEntity.ok(shopService.sellFish(uuid));
     }
 }
