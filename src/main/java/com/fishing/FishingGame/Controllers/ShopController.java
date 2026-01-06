@@ -6,27 +6,23 @@ import com.fishing.FishingGame.Services.ShopService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
-
+@RequestMapping("/profiles/{uuid}/shop")
 @RestController
 public class ShopController {
     private final ShopService shopService;
-    private final PlayerRepository repository;
-
     public ShopController(ShopService shopService, PlayerRepository repository) {
         this.shopService = shopService;
-        this.repository = repository;
     }
-    @PostMapping("/profile/{player_uuid}/shop/upgrade_rod")
-    public ResponseEntity<Boolean> upgradeRod(@PathVariable UUID player_uuid){
-       PlayerEntity player = repository.findById(player_uuid).orElseThrow(()-> new IllegalArgumentException("Invalid user"));
-      return ResponseEntity.ok(  shopService.upgradeRod(player_uuid));
+    @PostMapping("/upgrade_rod")
+    public ResponseEntity<Boolean> upgradeRod(@PathVariable UUID uuid){
+      return ResponseEntity.ok(shopService.upgradeRod(uuid));
     }
-    @PostMapping("/profile/{player_uuid}/shop/sell_fish")
-    public  ResponseEntity<Boolean> sellFish(@PathVariable UUID player_uuid){
-        PlayerEntity player = repository.findById(player_uuid).orElseThrow(()-> new IllegalArgumentException("Invalid user"));
-        return  ResponseEntity.ok(shopService.sellFish(player_uuid));
+    @PostMapping("/sell_fish")
+    public  ResponseEntity<Boolean> sellFish(@PathVariable UUID uuid){
+        return  ResponseEntity.ok(shopService.sellFish(uuid));
     }
 }

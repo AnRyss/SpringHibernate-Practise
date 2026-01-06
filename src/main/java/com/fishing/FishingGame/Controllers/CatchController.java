@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-
+@RequestMapping("profiles/{uuid}")
 @RestController
 public class CatchController {
 private final CatchService catchservice;
@@ -16,12 +16,9 @@ private final CatchService catchservice;
         this.catchservice = catchservice;
 
     }
-    @PostMapping("/profile/{uuid}/catch")
+    @PostMapping("/catch")
     public ResponseEntity<CompletableFuture<String>> startCatch(@PathVariable("uuid") UUID uuid) {
         return  ResponseEntity.ok(this.catchservice.startCatch(uuid));
     }
-    @GetMapping
-    public String greetings(){
-        return "привет";
-    }
+
 }

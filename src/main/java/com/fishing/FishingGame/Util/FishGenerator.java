@@ -2,35 +2,42 @@ package com.fishing.FishingGame.Util;
 
 import com.fishing.FishingGame.DomainEntities.Fish;
 import com.fishing.FishingGame.ENUMS.Fish_Rarity;
-import com.fishing.FishingGame.Services.LuckService;
+import com.fishing.FishingGame.ENUMS.Fish_Type;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
-public final class FishGenerator implements IGenerator {
-    private final Random random = new Random();
-    private static final Double[] chances = {2.0,50.0,100.0,130.0};
-    private static final Double[] normilizedChances = LuckService.normalizeChances(chances);
-private static int pickTheWinner(){
-    // 1. Генерируем случайное число от 0.0 до 1.0
-    double randomValue = Math.random();
-    // 2. Накапливаем сумму, чтобы найти нужный интервал
-    double currentSum = 0.0;
-    for (int i = 0; i < normilizedChances.length; i++) {
-        currentSum += normilizedChances[i];
-        // Как только накопленная сумма превысила случайное число — мы нашли победителя
-        if (randomValue <= currentSum) {
-            return i;
+public  class FishGenerator implements IGenerator {
+    private static Fish_Rarity pickTheWinner() {
+        List<Long> chances = new ArrayList<>();
+        for (Fish_Rarity rarity : Fish_Rarity.values()) {
+            chances.add(rarity.getChance());
         }
+        Long[] normilizedChances = LuckService.normalizeChances(chances.toArray(new Long[]{}));
+        double randomValue = Math.random();
 
+        double currentSum = 0.0;
+        for (int i = 0; i < normilizedChances.length; i++) {
+            currentSum += normilizedChances[i];
+            if (randomValue <= currentSum) {
+                return Fish_Rarity.values()[i];
+            }
+
+        }
+        return Fish_Rarity.values()[0];
     }
-    return normilizedChances.length - 1;
-}
+
     public static Fish generate() {
+        Fish_Rarity rarity = pickTheWinner();
+        List<Fish_Type> potentialFishList = new ArrayList<>();
+        for (Fish_Type type : Fish_Type.values()) {
+            if (type.getRarity().equals(rarity))
+                potentialFishList.add(type);
+        }
+        int randomIndex = Math.toIntExact(
+                Math.round(
+                        Math.random() * potentialFishList.size()
+                ));
+        return potentialFishList.get(randomIndex).createFish();
 
-    }
-    public static void main (String[] args){
-        System.out.println(Arrays.toString(normilizedChances));
     }
 }
