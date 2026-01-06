@@ -4,6 +4,7 @@ import com.fishing.FishingGame.Entities.PlayerEntity;
 import com.fishing.FishingGame.DomainEntities.Fish;
 import com.fishing.FishingGame.Repositories.PlayerRepository;
 import com.fishing.FishingGame.Util.FishGenerator;
+import com.fishing.FishingGame.Util.IGenerator;
 import com.fishing.FishingGame.Util.LuckService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -39,8 +40,8 @@ private final ScheduledExecutorService executor;
            executor.schedule(() -> {
                // Можно было сделать через DI EntityManager.unwrap(Session.class).merge(user), но имхо overcoding.
                 PlayerEntity freshuser = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("Invalid user"));
-
-                   Fish fish = FishGenerator.generate();
+               IGenerator generator = new FishGenerator();
+                   Fish fish = generator.generate();
                    freshuser.getFishInventory().add(fish);
                    repository.save(freshuser);
 

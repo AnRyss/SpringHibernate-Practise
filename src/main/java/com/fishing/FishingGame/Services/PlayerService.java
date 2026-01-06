@@ -41,11 +41,5 @@ public class PlayerService {
 
         );
     }
-    public void setProfiles(Map<Integer, Player> profiles) {
 
-    }
-    public String getMyProfile(Player user){
-        return user.toString();
-
-    }
 }

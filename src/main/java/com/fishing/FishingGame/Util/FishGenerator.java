@@ -1,15 +1,15 @@
 package com.fishing.FishingGame.Util;
 
 import com.fishing.FishingGame.DomainEntities.Fish;
-import com.fishing.FishingGame.ENUMS.Fish_Rarity;
-import com.fishing.FishingGame.ENUMS.Fish_Type;
+import com.fishing.FishingGame.enums.FishRarity;
+import com.fishing.FishingGame.enums.FishType;
 
 import java.util.*;
 
 public  class FishGenerator implements IGenerator {
-    private static Fish_Rarity pickTheWinner() {
+    private FishRarity pickTheWinner() {
         List<Long> chances = new ArrayList<>();
-        for (Fish_Rarity rarity : Fish_Rarity.values()) {
+        for (FishRarity rarity : FishRarity.values()) {
             chances.add(rarity.getChance());
         }
         Long[] normilizedChances = LuckService.normalizeChances(chances.toArray(new Long[]{}));
@@ -19,17 +19,17 @@ public  class FishGenerator implements IGenerator {
         for (int i = 0; i < normilizedChances.length; i++) {
             currentSum += normilizedChances[i];
             if (randomValue <= currentSum) {
-                return Fish_Rarity.values()[i];
+                return FishRarity.values()[i];
             }
 
         }
-        return Fish_Rarity.values()[0];
+        return FishRarity.values()[0];
     }
-
-    public static Fish generate() {
-        Fish_Rarity rarity = pickTheWinner();
-        List<Fish_Type> potentialFishList = new ArrayList<>();
-        for (Fish_Type type : Fish_Type.values()) {
+    @Override
+    public Fish generate() {
+        FishRarity rarity = pickTheWinner();
+        List<FishType> potentialFishList = new ArrayList<>();
+        for (FishType type : FishType.values()) {
             if (type.getRarity().equals(rarity))
                 potentialFishList.add(type);
         }
