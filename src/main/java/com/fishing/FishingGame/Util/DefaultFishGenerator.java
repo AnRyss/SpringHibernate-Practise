@@ -6,7 +6,7 @@ import com.fishing.FishingGame.enums.FishType;
 
 import java.util.*;
 
-public  class FishGenerator implements IGenerator {
+public  class DefaultFishGenerator implements IFishGenerator {
     private FishRarity pickTheWinner() {
         List<Long> chances = new ArrayList<>();
         for (FishRarity rarity : FishRarity.values()) {

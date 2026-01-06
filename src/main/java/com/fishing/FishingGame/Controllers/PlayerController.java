@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.UUID;
+
 @RequestMapping("/profiles")
 public class PlayerController {
     private final PlayerService playerService;
@@ -16,14 +17,22 @@ public class PlayerController {
     public PlayerController(PlayerService playerService) {
         this.playerService = playerService;
     }
+
     @PostMapping("/create_new")
-    public ResponseEntity<PlayerDto> createProfile(){
+    public ResponseEntity<PlayerDto> createProfile() {
 
         return ResponseEntity.ok(playerService.createProfile());
     }
-    @GetMapping("/{uuid}")
-    public String getMyProfile(@PathVariable UUID uuid){
-        return this.playerService.getProfileByUUID(uuid).toString();
 
+    @Deprecated
+    @GetMapping("/{uuid}")
+    public ResponseEntity<PlayerDto> getMyProfile(@PathVariable UUID uuid) {
+        return ResponseEntity.ok(playerService.getProfileByUUID(uuid));
+
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<PlayerDto> getPlayerProfileByUserName(@PathVariable String username) {
+        return ResponseEntity.ok(playerService.getProfileByUserName(username));
     }
 }

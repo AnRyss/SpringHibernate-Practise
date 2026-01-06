@@ -12,7 +12,10 @@ public class Rod {
         this.rodTier = rodTier;
         this.durability = 100;
     }
-private Rod(){}
+
+    private Rod() {
+    }
+
     public RodTier getRodtier() {
         return rodTier;
     }
@@ -28,7 +31,8 @@ private Rod(){}
     public void setDurability(double durability) {
         this.durability = durability;
     }
-    public boolean isFishable(){
+
+    public boolean isFishable() {
         return this.getDurability() > 0;
     }
 

@@ -26,7 +26,8 @@ public class PlayerEntity {
     private Rod rod;
     private double luck;
     private double money;
-
+    @OneToOne(mappedBy = "player")
+    private UserEntity user;
     @ElementCollection
     @CollectionTable(
             name = "FishInventory",
