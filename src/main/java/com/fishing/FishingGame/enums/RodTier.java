@@ -1,8 +1,6 @@
-package com.fishing.FishingGame.ENUMS;
+package com.fishing.FishingGame.enums;
 
-import com.fishing.FishingGame.DomainEntities.Rod;
-
-public enum Rod_Tier {
+public enum RodTier {
     COMMON(500,"Обычная"),
 
     UNCOMMON(1500,"Необычная"),
@@ -15,7 +13,7 @@ public enum Rod_Tier {
     private final int defaultUpgradePrice;
     private final String displayName;
 
-    Rod_Tier(int defaultUpgradePrice, String displayName) {
+    RodTier(int defaultUpgradePrice, String displayName) {
         this.defaultUpgradePrice = defaultUpgradePrice;
         this.displayName = displayName;
     }

@@ -1,6 +1,6 @@
 package com.fishing.FishingGame.DomainEntities;
 
-import com.fishing.FishingGame.ENUMS.Rod_Tier;
+import com.fishing.FishingGame.enums.RodTier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class Player {
     public static Player Beginner(){
         return new Player(
                 UUID.randomUUID(),
-                new Rod(Rod_Tier.COMMON),
+                new Rod(RodTier.COMMON),
                 1,
                 0,
                 new ArrayList<Fish>()
