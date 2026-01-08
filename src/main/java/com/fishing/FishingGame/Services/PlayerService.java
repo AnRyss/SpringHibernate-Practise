@@ -2,8 +2,7 @@ package com.fishing.FishingGame.Services;
 
 import com.fishing.FishingGame.Dto.PlayerDto;
 import com.fishing.FishingGame.Entities.PlayerEntity;
-import com.fishing.FishingGame.DomainEntities.Fish;
-import com.fishing.FishingGame.DomainEntities.Player;
+import com.fishing.FishingGame.Domain.Player;
 import com.fishing.FishingGame.Repositories.PlayerRepository;
 import com.fishing.FishingGame.Repositories.UserRepository;
 import org.springframework.stereotype.Service;

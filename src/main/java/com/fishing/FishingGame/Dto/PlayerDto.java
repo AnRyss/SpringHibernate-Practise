@@ -1,12 +1,11 @@
 package com.fishing.FishingGame.Dto;
 
-import com.fishing.FishingGame.DomainEntities.Fish;
-import com.fishing.FishingGame.DomainEntities.Player;
-import com.fishing.FishingGame.DomainEntities.Rod;
+import com.fishing.FishingGame.Domain.Items.Fish;
+import com.fishing.FishingGame.Domain.Player;
+import com.fishing.FishingGame.Domain.Items.Rod;
 import com.fishing.FishingGame.Entities.PlayerEntity;
 
 import java.util.List;
-import java.util.UUID;
 
 public record PlayerDto(
         double luck,

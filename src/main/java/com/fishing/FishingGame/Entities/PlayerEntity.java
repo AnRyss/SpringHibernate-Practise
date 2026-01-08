@@ -1,62 +1,61 @@
 package com.fishing.FishingGame.Entities;
 
-import com.fishing.FishingGame.DomainEntities.Fish;
-import com.fishing.FishingGame.DomainEntities.Player;
-import com.fishing.FishingGame.DomainEntities.Rod;
+import com.fishing.FishingGame.Domain.Player;
+import com.fishing.FishingGame.Domain.PlayerInventory;
+import com.fishing.FishingGame.Domain.Items.Rod;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Table(name = "Users")
 @Entity
 public class PlayerEntity {
-    public PlayerEntity(Player player) {
+    public PlayerEntity(Player player, UserEntity user) {
         this.uuid = player.getUuid();
         this.luck = player.getLuck();
         this.money = player.getMoney();
         this.rod = new Rod(player.getRod().getRodtier());
 
-     this.FishInventory= player.getFishInventory();
+        this.user = user;
     }
 
     @Id
-    private  UUID uuid;
+    private final UUID uuid;
+
     private Rod rod;
+
     private double luck;
+
     private double money;
+    @OneToMany(mappedBy = "player")
+    private InventoryItemEntity item;
     @OneToOne(mappedBy = "player")
-    private UserEntity user;
+    private final UserEntity user;
+
+    public PlayerInventory getPlayerInventory() {
+        return playerInventory;
+    }
+
+    public void setPlayerInventory(PlayerInventory playerInventory) {
+        this.playerInventory = playerInventory;
+    }
+
     @ElementCollection
     @CollectionTable(
             name = "FishInventory",
             joinColumns = @JoinColumn(name = "uuid")
     )
-    private List<Fish> FishInventory = new ArrayList<>();
+    private PlayerInventory playerInventory;
 
-    public PlayerEntity() {
-      this.uuid = UUID.randomUUID();
+    public PlayerEntity(UserEntity user) {
+        this.user = user;
+        this.uuid = UUID.randomUUID();
     }
-
-    public void setUuid(UUID uuid) {
-      this.uuid = uuid;
-    }
-
 
     public UUID getUuid() {
         return uuid;
     }
 
-
-
-    public List<Fish> getFishInventory() {
-        return FishInventory;
-    }
-
-    public void setFishInventory(List<Fish> fishInventory) {
-        this.FishInventory = fishInventory;
-    }
 
     public double getMoney() {
         return money;
@@ -81,7 +80,6 @@ public class PlayerEntity {
     public void setRod(Rod rod) {
         this.rod = rod;
     }
-
 
 
 }

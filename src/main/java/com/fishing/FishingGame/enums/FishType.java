@@ -1,9 +1,8 @@
 package com.fishing.FishingGame.enums;
 
-import com.fishing.FishingGame.DomainEntities.Fish;
+import com.fishing.FishingGame.Domain.Items.Fish;
 
 public enum FishType {
-    // Конструктор: название, вес, редкость, цена
     CARP("Карп", 2.5, FishRarity.COMMON, 10L),
     PIKE("Щука", 4.0, FishRarity.UNCOMMON, 25L),
     SALMON("Лосось", 5.0, FishRarity.EPIC, 50L),

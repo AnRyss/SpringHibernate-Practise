@@ -1,10 +1,12 @@
-package com.fishing.FishingGame.DomainEntities;
+package com.fishing.FishingGame.Domain.Items;
 
+import com.fishing.FishingGame.Interfaces.IItem;
+import com.fishing.FishingGame.enums.ItemType;
 import com.fishing.FishingGame.enums.RodTier;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public class Rod {
+public class Rod implements IItem {
     private RodTier rodTier;
     private double durability;
 
@@ -37,4 +39,13 @@ public class Rod {
     }
 
 
+    @Override
+    public String getName() {
+        return "Удочка " + rodTier.toString() + " тира";
+    }
+
+    @Override
+    public ItemType getType() {
+        return ItemType.Rod;
+    }
 }

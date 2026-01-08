@@ -2,8 +2,8 @@ package com.fishing.FishingGame.Services;
 
 import com.fishing.FishingGame.enums.RodTier;
 import com.fishing.FishingGame.Entities.PlayerEntity;
-import com.fishing.FishingGame.DomainEntities.Fish;
-import com.fishing.FishingGame.DomainEntities.Rod;
+import com.fishing.FishingGame.Domain.Items.Fish;
+import com.fishing.FishingGame.Domain.Items.Rod;
 import com.fishing.FishingGame.Repositories.PlayerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

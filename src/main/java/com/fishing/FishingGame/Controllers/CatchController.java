@@ -2,7 +2,7 @@ package com.fishing.FishingGame.Controllers;
 
 import com.fishing.FishingGame.Services.CatchService;
 import com.fishing.FishingGame.Services.PlayerService;
-import com.fishing.FishingGame.Util.DefaultFishGenerator;
+import com.fishing.FishingGame.Configs.FishGenerators.DefaultFishGenerator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ public class CatchController {
 
     @PostMapping("/catch")
     public ResponseEntity<String> startCatch(@PathVariable("uuid") UUID uuid) {
-        return ResponseEntity.ok(this.catchservice.startCatch(uuid, new DefaultFishGenerator()));
+        return ResponseEntity.ok(this.catchservice.startCatch(uuid));
     }
 
 }

@@ -1,13 +1,18 @@
-package com.fishing.FishingGame.Util;
+package com.fishing.FishingGame.Configs.FishGenerators;
 
-import com.fishing.FishingGame.DomainEntities.Fish;
+import com.fishing.FishingGame.Domain.Items.Fish;
+import com.fishing.FishingGame.Domain.FishLocations.AbstractLocation;
+import com.fishing.FishingGame.Dto.FishingContext;
+import com.fishing.FishingGame.Interfaces.IFishGenerator;
+import com.fishing.FishingGame.Util.LuckService;
 import com.fishing.FishingGame.enums.FishRarity;
 import com.fishing.FishingGame.enums.FishType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public  class DefaultFishGenerator implements IFishGenerator {
-    private FishRarity pickTheWinner() {
+public class LocationFishGenerator implements IFishGenerator {
+    private FishRarity pickTheWinner(AbstractLocation location) {
         List<Long> chances = new ArrayList<>();
         for (FishRarity rarity : FishRarity.values()) {
             chances.add(rarity.getChance());
@@ -26,8 +31,8 @@ public  class DefaultFishGenerator implements IFishGenerator {
         return FishRarity.values()[0];
     }
     @Override
-    public Fish generate() {
-        FishRarity rarity = pickTheWinner();
+    public Fish generate(FishingContext context) {
+        FishRarity rarity = pickTheWinner(context.location());
         List<FishType> potentialFishList = new ArrayList<>();
         for (FishType type : FishType.values()) {
             if (type.getRarity().equals(rarity))
@@ -40,4 +45,7 @@ public  class DefaultFishGenerator implements IFishGenerator {
         return potentialFishList.get(randomIndex).createFish();
 
     }
+
+
+
 }
