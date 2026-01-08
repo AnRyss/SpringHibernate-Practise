@@ -5,6 +5,8 @@ import com.fishing.FishingGame.enums.ItemType;
 import com.fishing.FishingGame.enums.RodTier;
 import jakarta.persistence.Embeddable;
 
+import java.util.Objects;
+
 @Embeddable
 public class Rod implements IItem {
     private RodTier rodTier;
@@ -41,11 +43,23 @@ public class Rod implements IItem {
 
     @Override
     public String getName() {
-        return "Удочка " + rodTier.toString() + " тира";
+        return rodTier.name() + " удочка";
     }
 
     @Override
     public ItemType getType() {
         return ItemType.Rod;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Rod rod = (Rod) o;
+        return Double.compare(durability, rod.durability) == 0 && rodTier == rod.rodTier;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rodTier, durability);
     }
 }

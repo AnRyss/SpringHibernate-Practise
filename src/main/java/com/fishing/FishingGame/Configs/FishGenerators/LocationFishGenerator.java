@@ -12,27 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationFishGenerator implements IFishGenerator {
-    private FishRarity pickTheWinner(AbstractLocation location) {
-        List<Long> chances = new ArrayList<>();
-        for (FishRarity rarity : FishRarity.values()) {
-            chances.add(rarity.getChance());
-        }
-        Long[] normilizedChances = LuckService.normalizeChances(chances.toArray(new Long[]{}));
-        double randomValue = Math.random();
 
-        double currentSum = 0.0;
-        for (int i = 0; i < normilizedChances.length; i++) {
-            currentSum += normilizedChances[i];
-            if (randomValue <= currentSum) {
-                return FishRarity.values()[i];
-            }
-
-        }
-        return FishRarity.values()[0];
-    }
     @Override
     public Fish generate(FishingContext context) {
-        FishRarity rarity = pickTheWinner(context.location());
+        FishRarity rarity = LuckService.pickTheWinner(context.location());
         List<FishType> potentialFishList = new ArrayList<>();
         for (FishType type : FishType.values()) {
             if (type.getRarity().equals(rarity))

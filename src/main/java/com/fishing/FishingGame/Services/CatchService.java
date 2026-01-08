@@ -39,7 +39,7 @@ public class CatchService {
     public String startCatch(UUID uuid) {
         Player user = playerMapper.toDomain(repository.findById(uuid).orElseThrow(() -> new NullPointerException("Invalid user")));
         IFishGenerator generator = context.getBean(genType, IFishGenerator.class);
-        if (!user.getRod().isFishable())
+        if (!user.getCurrentRod().isFishable())
             return "Удочка сломана, надо починить";
         if (activeFishers.putIfAbsent(uuid, System.currentTimeMillis()) != null)
             return "Рыбалка уже идет!";

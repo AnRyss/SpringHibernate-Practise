@@ -5,6 +5,7 @@ import com.fishing.FishingGame.Dto.PlayerDto;
 import com.fishing.FishingGame.Entities.PlayerEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface PlayerMapper {
@@ -12,4 +13,6 @@ public interface PlayerMapper {
     PlayerEntity toEntity(Player domain);
     Player toDomain(PlayerEntity entity);
     PlayerDto toDto(Player domain);
+    PlayerDto toDto(PlayerEntity entity);
+    void updateEntity(@MappingTarget PlayerEntity entity, Player domain);
 }

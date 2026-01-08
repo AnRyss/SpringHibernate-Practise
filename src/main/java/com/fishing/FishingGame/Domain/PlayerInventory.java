@@ -1,7 +1,9 @@
 package com.fishing.FishingGame.Domain;
 
+import com.fishing.FishingGame.Domain.Items.Fish;
 import com.fishing.FishingGame.Interfaces.IInventory;
 import com.fishing.FishingGame.Interfaces.IItem;
+import com.fishing.FishingGame.enums.ItemType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,12 @@ public class PlayerInventory implements IInventory {
     private List<IItem> items = new ArrayList<>();
 
 
+    public List<Fish> getFishes() {
+        return items.stream()
+                .filter(Fish.class::isInstance)
+                .map(Fish.class::cast)
+                .toList();
+    }
     @Override
     public List<IItem> getItems() {
         return items;
@@ -35,6 +43,10 @@ public class PlayerInventory implements IInventory {
     @Override
     public PlayerInventory removeItem(int index) {
         items.remove(index);
+        return this;
+    }
+    public PlayerInventory removeItem(IItem item){
+        items.remove(item);
         return this;
     }
 

@@ -5,6 +5,8 @@ import com.fishing.FishingGame.enums.FishRarity;
 import com.fishing.FishingGame.enums.ItemType;
 import jakarta.persistence.Embeddable;
 
+import java.util.Objects;
+
 @Embeddable
 public record Fish(
         String name,
@@ -30,6 +32,18 @@ public record Fish(
          @Override
          public ItemType getType() {
              return ItemType.Fish;
+         }
+
+         @Override
+         public boolean equals(Object o) {
+             if (o == null || getClass() != o.getClass()) return false;
+             Fish fish = (Fish) o;
+             return Double.compare(size, fish.size) == 0 && Double.compare(cost, fish.cost) == 0 && Objects.equals(name, fish.name) && rarity == fish.rarity;
+         }
+
+         @Override
+         public int hashCode() {
+             return Objects.hash(name, size, rarity, cost);
          }
      }
 

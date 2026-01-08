@@ -3,10 +3,11 @@ package com.fishing.FishingGame.Domain;
 import com.fishing.FishingGame.Domain.FishLocations.AbstractLocation;
 import com.fishing.FishingGame.Domain.Items.Fish;
 import com.fishing.FishingGame.Domain.Items.Rod;
+import com.fishing.FishingGame.Entities.PlayerEntity;
+import com.fishing.FishingGame.Exceptions.InShortOfMoneyException;
+import com.fishing.FishingGame.Exceptions.RodUpgradeException;
 import com.fishing.FishingGame.enums.RodTier;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class Player {
@@ -19,7 +20,23 @@ public class Player {
     public Rod getCurrentRod() {
         return currentRod;
     }
+    public void upgradeRod() {
+      RodTier nextTier = getCurrentRod().getRodtier().getNext().orElseThrow(()->new RodUpgradeException(uuid));
+        double moneyNeeded = nextTier.getPrice();
+            if (moneyNeeded > getMoney())
+                throw new InShortOfMoneyException(uuid,getMoney());
+            Rod newRod = new Rod(nextTier);
+            getInventory().addItem(newRod);
+            getInventory().removeItem(getCurrentRod());
+            setCurrentRod(newRod);
+            setMoney(getMoney() - moneyNeeded);
 
+    }
+    public void sellFish(){
+       double totalProfit = inventory.getFishes().stream().mapToDouble(Fish::cost).sum();
+        inventory.getItems().removeIf(item -> item instanceof Fish);
+        this.money += totalProfit;
+    }
     public void setCurrentRod(Rod currentRod) {
         this.currentRod = currentRod;
     }
@@ -43,15 +60,18 @@ public class Player {
         this.uuid = uuid;
     }
     public static Player Beginner(){
-        return new Player(
+        Rod defRod = new Rod(RodTier.COMMON);
+      Player player =  new Player(
                 UUID.randomUUID(),
                 1,
                 0,
-                new PlayerInventory().addItem(new Rod(RodTier.COMMON))
+                new PlayerInventory().addItem(defRod)
         );
+      player.setCurrentRod(defRod);
+        return player;
     }
 
-    public Player( UUID uuid, double luck, double money,PlayerInventory inventory) {
+    private Player( UUID uuid, double luck, double money,PlayerInventory inventory) {
 
         this.uuid = uuid;
         this.luck = luck;
