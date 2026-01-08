@@ -1,5 +1,6 @@
 package com.fishing.FishingGame.Services;
 
+import com.fishing.FishingGame.Domain.Player;
 import com.fishing.FishingGame.Interfaces.IFishGenerator;
 import com.fishing.FishingGame.Dto.FishingContext;
 import com.fishing.FishingGame.Entities.PlayerEntity;
@@ -13,18 +14,15 @@ import java.util.concurrent.ScheduledExecutorService;
 
 @Component
 public class CatchResolver {
-    private final PlayerRepository repository;
-
-    public CatchResolver(PlayerRepository repository, ScheduledExecutorService executor, ApplicationContext context, CatchService catchService) {
-        this.repository = repository;
-
+    private final PlayerService playerService;
+    public CatchResolver(PlayerRepository repository, ScheduledExecutorService executor, ApplicationContext context, CatchService catchService, PlayerService playerService) {
+        this.playerService = playerService;
     }
 
     @Transactional
-    public void finishCatching(UUID uuid, IFishGenerator generator, FishingContext fishContext) {
-        PlayerEntity user = repository.findById(uuid).orElseThrow(() -> new NullPointerException("Invalid user"));
-        user.getFishInventory().add(generator.generate(fishContext));
-        repository.save(user);
+    public void finishCatching(String userName,Player player, IFishGenerator generator, FishingContext fishContext) {
+        player.getInventory().addItem(generator.generate(fishContext));
+        playerService.updatePlayer(userName,player);
     }
 
 }

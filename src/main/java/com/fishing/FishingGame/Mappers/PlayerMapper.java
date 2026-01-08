@@ -14,5 +14,7 @@ public interface PlayerMapper {
     Player toDomain(PlayerEntity entity);
     PlayerDto toDto(Player domain);
     PlayerDto toDto(PlayerEntity entity);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "username", ignore = true)
     void updateEntity(@MappingTarget PlayerEntity entity, Player domain);
 }

@@ -21,49 +21,46 @@ import java.util.concurrent.TimeUnit;
 public class CatchService {
     @Value("${game.fishing.generator-type}")
     private String genType;
-    private final ApplicationContext context;
-    private final PlayerRepository repository;
+    private final Map<String, IFishGenerator> generators;
     private final CatchResolver  catchResolver;
     private final ScheduledExecutorService executor;
-    private  final PlayerMapper playerMapper;
-    private final Map<UUID, Long> activeFishers = new ConcurrentHashMap<>();
-
-    public CatchService(PlayerRepository repository, PlayerService playerService, ScheduledExecutorService executor, ApplicationContext context, PlayerRepository repository1, CatchResolver catchResolver, ScheduledExecutorService executor1, PlayerMapper playerMapper) {
-        this.context = context;
-        this.repository = repository;
+    private final PlayerService playerService;
+    private final Map<String, Long> activeFishers = new ConcurrentHashMap<>();
+    public CatchService(PlayerRepository repository, PlayerService playerService, ScheduledExecutorService executor, ApplicationContext context, PlayerRepository repository1, CatchResolver catchResolver, ScheduledExecutorService executor1, Map<String, IFishGenerator> generators, PlayerService playerService1, PlayerMapper playerMapper) {
         this.catchResolver = catchResolver;
         this.executor = executor;
-        this.playerMapper = playerMapper;
+        this.generators = generators;
+        this.playerService = playerService1;
     }
 
-    public String startCatch(UUID uuid) {
-        Player user = playerMapper.toDomain(repository.findById(uuid).orElseThrow(() -> new NullPointerException("Invalid user")));
-        IFishGenerator generator = context.getBean(genType, IFishGenerator.class);
-        if (!user.getCurrentRod().isFishable())
+    public String startCatch(String userName) {
+        Player player = playerService.getDomainByUsername(userName);
+        IFishGenerator generator = generators.getOrDefault(genType,generators.get("default"));
+        if (!player.getCurrentRod().isFishable())
             return "Удочка сломана, надо починить";
-        if (activeFishers.putIfAbsent(uuid, System.currentTimeMillis()) != null)
+        if (activeFishers.putIfAbsent(userName, System.currentTimeMillis()) != null)
             return "Рыбалка уже идет!";
         Integer timetocatch = LuckService.getFishingTime();
         executor.schedule(() -> {
             try {
-
-                catchResolver.finishCatching(uuid, generator, new FishingContext(null,null,null));
+                Player freshPlayer = playerService.getDomainByUsername(userName);
+                catchResolver.finishCatching(userName,freshPlayer, generator, new FishingContext(null,null,null));
             } finally {
-                activeFishers.remove(uuid);
+                activeFishers.remove(userName);
             }
         }, (long) timetocatch, TimeUnit.SECONDS);
 
         return "Рыбалка началась!";
     }
 
-    public boolean isPlayerInFishingProcess(UUID uuid) {
-        return !(activeFishers.get(uuid) == null);
+    public boolean isPlayerInFishingProcess(String userName) {
+        return !(activeFishers.get(userName) == null);
     }
 
 
 
 
-    public Map<UUID, Long> getActiveFishers() {
+    public Map<String, Long> getActiveFishers() {
         return activeFishers;
     }
 }
