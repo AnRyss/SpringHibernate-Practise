@@ -4,9 +4,14 @@ import com.fishing.FishingGame.Domain.Player;
 
 import java.util.UUID;
 
-public class RodUpgradeException extends RuntimeException{
-private final UUID playerUuid;
+public class RodUpgradeException extends RuntimeException {
+    private UUID playerUuid;
+
     public RodUpgradeException(UUID playerUuid) {
         this.playerUuid = playerUuid;
+    }
+
+    public RodUpgradeException(String message) {
+        super(message);
     }
 }

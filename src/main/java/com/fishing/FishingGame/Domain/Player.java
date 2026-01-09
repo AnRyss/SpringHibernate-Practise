@@ -13,6 +13,7 @@ import java.util.UUID;
 public class Player {
     private final UUID uuid;
     private double luck;
+    private PlayerPassesInventory passesInventory;
     private PlayerInventory inventory;
     private double money;
     private AbstractLocation currentLocation;
@@ -79,6 +80,13 @@ public class Player {
         this.inventory = inventory;
     }
 
+    public PlayerPassesInventory getPassesInventory() {
+        return passesInventory;
+    }
+
+    public void setPassesInventory(PlayerPassesInventory passesInventory) {
+        this.passesInventory = passesInventory;
+    }
 
     @Override
 public String toString() {

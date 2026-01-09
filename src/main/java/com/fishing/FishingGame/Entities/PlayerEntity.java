@@ -1,10 +1,9 @@
 package com.fishing.FishingGame.Entities;
-
 import com.fishing.FishingGame.Domain.Player;
-import com.fishing.FishingGame.Domain.PlayerInventory;
-import com.fishing.FishingGame.Domain.Items.Rod;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Table(name = "Users")
@@ -14,34 +13,23 @@ public class PlayerEntity {
     private final UUID uuid;
     private double luck;
     private double money;
-    @OneToMany(mappedBy = "player")
-    private InventoryItemEntity item;
     @OneToOne(mappedBy = "player")
     private final UserEntity user;
-    @ElementCollection
-    @CollectionTable(
-            name = "FishInventory",
-            joinColumns = @JoinColumn(name = "uuid")
-    )
-    private PlayerInventory playerInventory;
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemEntity> inventory = new ArrayList<>();
     public PlayerEntity(Player player, UserEntity user) {
         this.uuid = player.getUuid();
         this.luck = player.getLuck();
         this.money = player.getMoney();
         this.user = user;
+
     }
 
     public PlayerEntity(UserEntity user) {
         this.user = user;
         this.uuid = UUID.randomUUID();
     }
-    public PlayerInventory getPlayerInventory() {
-        return playerInventory;
-    }
 
-    public void setPlayerInventory(PlayerInventory playerInventory) {
-        this.playerInventory = playerInventory;
-    }
     public UUID getUuid() {
         return uuid;
     }

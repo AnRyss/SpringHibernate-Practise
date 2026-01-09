@@ -53,10 +53,11 @@ public class PlayerService {
         return playerMapper.toDomain(entity);
     }
     @Transactional
-    public void updatePlayer(String userName,Player domain) {
+    public PlayerDto updatePlayer(String userName,Player domain) {
         PlayerEntity entity = userRepository.findProfileByUsername(userName)
                 .orElseThrow();
         playerMapper.updateEntity(entity, domain);
         playerRepository.save(entity);
+        return  playerMapper.toDto(entity);
     }
 }

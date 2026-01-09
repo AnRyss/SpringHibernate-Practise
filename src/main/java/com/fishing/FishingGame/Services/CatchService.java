@@ -1,18 +1,14 @@
 package com.fishing.FishingGame.Services;
-
 import com.fishing.FishingGame.Domain.Player;
 import com.fishing.FishingGame.Dto.FishingContext;
-import com.fishing.FishingGame.Entities.PlayerEntity;
 import com.fishing.FishingGame.Mappers.PlayerMapper;
 import com.fishing.FishingGame.Repositories.PlayerRepository;
 import com.fishing.FishingGame.Interfaces.IFishGenerator;
-import com.fishing.FishingGame.Util.LuckService;
+import com.fishing.FishingGame.Util.LuckUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +36,7 @@ public class CatchService {
             return "Удочка сломана, надо починить";
         if (activeFishers.putIfAbsent(userName, System.currentTimeMillis()) != null)
             return "Рыбалка уже идет!";
-        Integer timetocatch = LuckService.getFishingTime();
+        Integer timetocatch = LuckUtil.getFishingTime();
         executor.schedule(() -> {
             try {
                 Player freshPlayer = playerService.getDomainByUsername(userName);

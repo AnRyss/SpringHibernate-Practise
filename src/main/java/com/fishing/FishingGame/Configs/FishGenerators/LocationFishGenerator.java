@@ -1,10 +1,9 @@
 package com.fishing.FishingGame.Configs.FishGenerators;
 
 import com.fishing.FishingGame.Domain.Items.Fish;
-import com.fishing.FishingGame.Domain.FishLocations.AbstractLocation;
 import com.fishing.FishingGame.Dto.FishingContext;
 import com.fishing.FishingGame.Interfaces.IFishGenerator;
-import com.fishing.FishingGame.Util.LuckService;
+import com.fishing.FishingGame.Util.LuckUtil;
 import com.fishing.FishingGame.enums.FishRarity;
 import com.fishing.FishingGame.enums.FishType;
 
@@ -15,7 +14,7 @@ public class LocationFishGenerator implements IFishGenerator {
 
     @Override
     public Fish generate(FishingContext context) {
-        FishRarity rarity = LuckService.pickTheWinner(context.location());
+        FishRarity rarity = LuckUtil.pickTheWinner(context.location());
         List<FishType> potentialFishList = new ArrayList<>();
         for (FishType type : FishType.values()) {
             if (type.getRarity().equals(rarity))

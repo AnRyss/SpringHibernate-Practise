@@ -1,14 +1,11 @@
 package com.fishing.FishingGame.Util;
-
 import com.fishing.FishingGame.Domain.FishLocations.AbstractLocation;
 import com.fishing.FishingGame.enums.FishRarity;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class LuckService {
+public class LuckUtil {
     public static Integer getFishingTime(){
         Random random = new Random();
         int min = 5, max = 10;
@@ -33,7 +30,7 @@ public class LuckService {
         for (FishRarity rarity : FishRarity.values()) {
             chances.add(rarity.getChance());
         }
-        Long[] normilizedChances = LuckService.normalizeChances(chances.toArray(new Long[]{}));
+        Long[] normilizedChances = LuckUtil.normalizeChances(chances.toArray(new Long[]{}));
         double randomValue = Math.random();
 
         double currentSum = 0.0;

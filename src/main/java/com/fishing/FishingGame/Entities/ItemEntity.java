@@ -2,11 +2,10 @@ package com.fishing.FishingGame.Entities;
 
 import com.fishing.FishingGame.enums.ItemType;
 import jakarta.persistence.*;
-
-import java.util.UUID;
-
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "item_category")
 @Entity
-public class InventoryItemEntity {
+public class ItemEntity {
     @Id
     @GeneratedValue
     private long id;
@@ -15,6 +14,6 @@ public class InventoryItemEntity {
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id")
-    private PlayerEntity player; // Связь с владельцем
+    private PlayerEntity player;
 
 }
