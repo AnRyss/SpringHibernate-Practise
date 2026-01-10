@@ -1,6 +1,4 @@
-package com.fishing.FishingGame.DomainEntities;
-
-import jakarta.persistence.Column;
+package com.fishing.FishingGame.Domain;
 
 public class User {
     private  String username;

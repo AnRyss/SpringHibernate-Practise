@@ -1,63 +1,62 @@
 package com.fishing.FishingGame.Services;
-
-import com.fishing.FishingGame.Entities.PlayerEntity;
-import com.fishing.FishingGame.DomainEntities.Fish;
+import com.fishing.FishingGame.Domain.Player;
+import com.fishing.FishingGame.Dto.FishingContext;
+import com.fishing.FishingGame.Mappers.PlayerMapper;
 import com.fishing.FishingGame.Repositories.PlayerRepository;
-import com.fishing.FishingGame.Util.IFishGenerator;
-import com.fishing.FishingGame.Util.LuckService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.fishing.FishingGame.Interfaces.IFishGenerator;
+import com.fishing.FishingGame.Util.LuckUtil;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class CatchService {
-    private final PlayerRepository repository;
-    @Autowired
+    @Value("${game.fishing.generator-type}")
+    private String genType;
+    private final Map<String, IFishGenerator> generators;
+    private final CatchResolver  catchResolver;
     private final ScheduledExecutorService executor;
-    private final Map<UUID, Long> activeFishers = new ConcurrentHashMap<>();
-
-    public CatchService(PlayerRepository repository, PlayerService playerService,  ScheduledExecutorService executor) {
-        this.repository = repository;
+    private final PlayerService playerService;
+    private final Map<String, Long> activeFishers = new ConcurrentHashMap<>();
+    public CatchService(PlayerRepository repository, PlayerService playerService, ScheduledExecutorService executor, ApplicationContext context, PlayerRepository repository1, CatchResolver catchResolver, ScheduledExecutorService executor1, Map<String, IFishGenerator> generators, PlayerService playerService1, PlayerMapper playerMapper) {
+        this.catchResolver = catchResolver;
         this.executor = executor;
+        this.generators = generators;
+        this.playerService = playerService1;
     }
 
-    public String startCatch(UUID uuid, IFishGenerator FishGenerator) {
-        PlayerEntity user = repository.findById(uuid).orElseThrow(() -> new NullPointerException("Invalid user"));
-
-        if (!user.getRod().isFishable())
+    public String startCatch(String userName) {
+        Player player = playerService.getDomainByUsername(userName);
+        IFishGenerator generator = generators.getOrDefault(genType,generators.get("default"));
+        if (!player.getCurrentRod().isFishable())
             return "Удочка сломана, надо починить";
-        if (activeFishers.putIfAbsent(uuid, System.currentTimeMillis()) != null)
+        if (activeFishers.putIfAbsent(userName, System.currentTimeMillis()) != null)
             return "Рыбалка уже идет!";
+        Integer timetocatch = LuckUtil.getFishingTime();
+        executor.schedule(() -> {
+            try {
+                Player freshPlayer = playerService.getDomainByUsername(userName);
+                catchResolver.finishCatching(userName,freshPlayer, generator, new FishingContext(null,null,null));
+            } finally {
+                activeFishers.remove(userName);
+            }
+        }, (long) timetocatch, TimeUnit.SECONDS);
 
-        Integer timetocatch = LuckService.getFishingTime();
-
-        if (user.getRod().isFishable()) {
-            executor.schedule(() -> {
-                // Можно было сделать через DI EntityManager.unwrap(Session.class).merge(user), но имхо overcoding.
-                PlayerEntity freshuser = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("Invalid user"));
-                Fish fish = FishGenerator.generate();
-                freshuser.getFishInventory().add(fish);
-                repository.save(freshuser);
-                activeFishers.remove(uuid);
-
-
-            }, (long) timetocatch, TimeUnit.SECONDS);
-
-        }
-        ;
-
-        return ("Рыбалка началась, ждите: " + timetocatch);
+        return "Рыбалка началась!";
     }
 
-    public boolean isPlayerInFishingProcess(UUID uuid) {
-        return !(activeFishers.get(uuid) == null);
+    public boolean isPlayerInFishingProcess(String userName) {
+        return !(activeFishers.get(userName) == null);
     }
 
+
+
+
+    public Map<String, Long> getActiveFishers() {
+        return activeFishers;
+    }
 }

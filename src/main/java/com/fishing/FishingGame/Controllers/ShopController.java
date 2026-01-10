@@ -1,5 +1,6 @@
 package com.fishing.FishingGame.Controllers;
 
+import com.fishing.FishingGame.Dto.PlayerDto;
 import com.fishing.FishingGame.Entities.PlayerEntity;
 import com.fishing.FishingGame.Repositories.PlayerRepository;
 import com.fishing.FishingGame.Services.ShopService;
@@ -21,12 +22,12 @@ public class ShopController {
     }
 
     @PostMapping("/upgrade_rod")
-    public ResponseEntity<Boolean> upgradeRod(@PathVariable UUID uuid) {
+    public ResponseEntity<PlayerDto> upgradeRod(@PathVariable UUID uuid) {
         return ResponseEntity.ok(shopService.upgradeRod(uuid));
     }
 
     @PostMapping("/sell_fish")
-    public ResponseEntity<Boolean> sellFish(@PathVariable UUID uuid) {
+    public ResponseEntity<PlayerDto> sellFish(@PathVariable UUID uuid) {
         return ResponseEntity.ok(shopService.sellFish(uuid));
     }
 }
