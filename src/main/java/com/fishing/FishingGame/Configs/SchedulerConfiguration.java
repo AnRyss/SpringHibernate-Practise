@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
+import java.util.concurrent.ScheduledExecutorService;
+
 @Configuration
 public class SchedulerConfiguration {
 
@@ -17,5 +19,9 @@ public class SchedulerConfiguration {
         scheduler.setAwaitTerminationSeconds(10);
         scheduler.initialize();
         return scheduler;
+    }
+    @Bean
+    public ScheduledExecutorService scheduledExecutorService(ThreadPoolTaskScheduler fishingScheduler) {
+        return fishingScheduler.getScheduledExecutor();
     }
 }

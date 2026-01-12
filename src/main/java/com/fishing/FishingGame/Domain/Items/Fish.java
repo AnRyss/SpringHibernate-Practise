@@ -7,7 +7,7 @@ import jakarta.persistence.Embeddable;
 
 import java.util.Objects;
 
-@Embeddable
+
 public record Fish(
         String name,
         double size,

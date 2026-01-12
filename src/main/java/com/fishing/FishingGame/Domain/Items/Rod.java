@@ -8,7 +8,7 @@ import jakarta.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public class Rod implements IItem {
+public class Rod extends PhysicalItem {
     private RodTier rodTier;
     private double durability;
 

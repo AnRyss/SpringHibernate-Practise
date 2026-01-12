@@ -8,15 +8,14 @@ public class LocationPass extends AbstractPass {
 
     public LocationPass(AbstractLocation location) {
         this.location = location;
+
     }
 
     @Override
     public String getName() {
-        return "Проход на локацию " + location.toString() ;
+
+        return "Проход на локацию " + super.getName();
     }
 
-    @Override
-    public ItemType getType() {
-        return ItemType.Pass;
-    }
+
 }

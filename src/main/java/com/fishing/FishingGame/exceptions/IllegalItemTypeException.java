@@ -1,4 +1,4 @@
-package com.fishing.FishingGame.Exceptions;
+package com.fishing.FishingGame.exceptions;
 
 public class IllegalItemTypeException extends RuntimeException {
     public IllegalItemTypeException(String message) {
