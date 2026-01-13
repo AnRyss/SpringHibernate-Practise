@@ -1,24 +1,22 @@
 package com.fishing.FishingGame.Domain.Items;
 
-import com.fishing.FishingGame.Interfaces.IItem;
 import com.fishing.FishingGame.enums.ItemType;
 import com.fishing.FishingGame.enums.RodTier;
-import jakarta.persistence.Embeddable;
-
 import java.util.Objects;
 
-@Embeddable
-public class Rod implements IItem {
+
+public class Rod extends PhysicalItem {
     private RodTier rodTier;
     private double durability;
-
     public Rod(RodTier rodTier) {
         this.rodTier = rodTier;
         this.durability = 100;
+        super.setName(rodTier.name() + " удочка");
     }
 
     private Rod() {
     }
+
 
     public RodTier getRodtier() {
         return rodTier;

@@ -10,20 +10,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class InventoryService {
     private final PlayerService playerService;
-    public InventoryService(PlayerService playerService, PlayerMapper playerMapper) {
+    public InventoryService(PlayerService playerService) {
         this.playerService = playerService;
     }
     @Transactional
-    public PlayerDto removeItem (String userName, int index){
-       Player playerDomain = playerService.getDomainByUsername(userName);
+    public PlayerDto removeItem (int index){
+       Player playerDomain =  playerService.getCurrentPlayer();
        playerDomain.getInventory().removeItem(index);
-      return playerService.updatePlayer(userName,playerDomain);
+      return playerService.updatePlayer(playerDomain);
 
     }
    @Transactional
-    public PlayerDto addItem(String userName, IItem item){
-       Player playerDomain = playerService.getDomainByUsername(userName);
+    public PlayerDto addItem( IItem item){
+       Player playerDomain = playerService.getCurrentPlayer();
        playerDomain.getInventory().addItem(item);
-       return playerService.updatePlayer(userName,playerDomain);
+       return playerService.updatePlayer(playerDomain);
    }
 }

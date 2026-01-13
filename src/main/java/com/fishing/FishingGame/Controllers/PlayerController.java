@@ -3,6 +3,8 @@ package com.fishing.FishingGame.Controllers;
 import com.fishing.FishingGame.Dto.PlayerDto;
 import com.fishing.FishingGame.Services.PlayerService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,16 +20,9 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @PostMapping("/create_new")
-    public ResponseEntity<PlayerDto> createProfile() {
-
-        return ResponseEntity.ok(playerService.createProfile());
-    }
-
-    @Deprecated
-    @GetMapping("/{uuid}")
-    public ResponseEntity<PlayerDto> getMyProfile(@PathVariable UUID uuid) {
-        return ResponseEntity.ok(playerService.getProfileByUUID(uuid));
+    @GetMapping
+    public ResponseEntity<PlayerDto> getMyProfile(@AuthenticationPrincipal UserDetails currentUser) {
+        return ResponseEntity.ok(playerService.getProfileByUserName(currentUser.getUsername()));
 
     }
 

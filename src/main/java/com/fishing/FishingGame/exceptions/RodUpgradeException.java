@@ -1,10 +1,12 @@
-package com.fishing.FishingGame.Exceptions;
-
-import com.fishing.FishingGame.Domain.Player;
+package com.fishing.FishingGame.exceptions;
 
 import java.util.UUID;
 
 public class RodUpgradeException extends RuntimeException {
+    public UUID getPlayerUuid() {
+        return playerUuid;
+    }
+
     private UUID playerUuid;
 
     public RodUpgradeException(UUID playerUuid) {

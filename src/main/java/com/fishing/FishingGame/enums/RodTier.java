@@ -2,7 +2,7 @@ package com.fishing.FishingGame.enums;
 
 import java.util.Optional;
 
-public enum RodTier {
+public enum     RodTier {
     COMMON(500,"Обычная","UNCOMMON"),
 
     UNCOMMON(1500,"Необычная","EPIC"),

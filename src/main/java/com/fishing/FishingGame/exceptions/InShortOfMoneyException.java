@@ -1,4 +1,4 @@
-package com.fishing.FishingGame.Exceptions;
+package com.fishing.FishingGame.exceptions;
 
 import java.util.UUID;
 

@@ -13,23 +13,23 @@ public class ShopService {
 
     private final PlayerService playerService;
 
-    public ShopService(PlayerRepository repository, PlayerMapper playerMapper, PlayerService playerService) {
+    public ShopService(PlayerService playerService) {
         this.playerService = playerService;
     }
 
     @Transactional
-    public PlayerDto upgradeRod(String userName) {
-        Player playerDomain = playerService.getDomainByUsername(userName);
+    public PlayerDto upgradeRod() {
+        Player playerDomain =  playerService.getCurrentPlayer();
         playerDomain.upgradeRod();
-        playerService.updatePlayer(userName, playerDomain);
-        return playerService.updatePlayer(userName, playerDomain);
+        playerService.updatePlayer( playerDomain);
+        return playerService.updatePlayer(playerDomain);
     }
 
     @Transactional
-    public PlayerDto sellFish(String userName) {
-        Player playerDomain = playerService.getDomainByUsername(userName);
+    public PlayerDto sellFish() {
+        Player playerDomain = playerService.getCurrentPlayer();
         playerDomain.sellFish();
-        return playerService.updatePlayer(userName, playerDomain);
+        return playerService.updatePlayer(playerDomain);
     }
 
 }

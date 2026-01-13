@@ -4,23 +4,23 @@ import com.fishing.FishingGame.Services.CatchService;
 import com.fishing.FishingGame.Services.PlayerService;
 import com.fishing.FishingGame.Configs.FishGenerators.DefaultFishGenerator;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RequestMapping("profiles/{uuid}")
+@RequestMapping("/profiles") // Убрали {uuid}
 @RestController
 public class CatchController {
-    private final CatchService catchservice;
+    private final CatchService catchService;
 
-    public CatchController(CatchService catchservice, PlayerService human) {
-        this.catchservice = catchservice;
-
+    public CatchController(CatchService catchService) {
+        this.catchService = catchService;
     }
 
     @PostMapping("/catch")
-    public ResponseEntity<String> startCatch(@PathVariable("uuid") UUID uuid) {
-        return ResponseEntity.ok(this.catchservice.startCatch(uuid));
+    public ResponseEntity<String> startCatch(@AuthenticationPrincipal UserDetails currentUser) {
+        return ResponseEntity.ok(catchService.startCatch());
     }
-
 }
