@@ -5,6 +5,7 @@ import com.fishing.FishingGame.Mappers.PlayerMapper;
 import com.fishing.FishingGame.Repositories.PlayerRepository;
 import com.fishing.FishingGame.Interfaces.IFishGenerator;
 import com.fishing.FishingGame.Util.LuckUtil;
+import com.fishing.FishingGame.exceptions.IllegalMultipleRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +41,7 @@ public class CatchService {
         if (!player.getCurrentRod().isFishable())
             return "Удочка сломана, надо починить";
         if (activeFishers.putIfAbsent(player.getUuid(), System.currentTimeMillis()) != null)
-            return "Рыбалка уже идет!";
+           throw new IllegalMultipleRequest("Рыбалка уже идет для " + player.getUuid());
         Integer timetocatch = LuckUtil.getFishingTime();
         executor.schedule(() -> {
             try {

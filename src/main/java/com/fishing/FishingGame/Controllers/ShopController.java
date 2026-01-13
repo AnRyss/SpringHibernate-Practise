@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
-@RequestMapping("/profiles/{uuid}/shop")
+@RequestMapping("/profiles/shop")
 @RestController
 public class ShopController {
     private final ShopService shopService;

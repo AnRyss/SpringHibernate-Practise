@@ -226,7 +226,7 @@ class PlayerMapperTest {
                 .thenAnswer(invocation -> {
                     Rod rod = invocation.getArgument(0);
                     ItemEntity rodEntity = new ItemEntity();
-                    rodEntity.setId(1);
+                    rodEntity.setId(1L);
                     rodEntity.setName(rod.getName());
                     rodEntity.setType(ItemType.Rod);
                     return rodEntity;

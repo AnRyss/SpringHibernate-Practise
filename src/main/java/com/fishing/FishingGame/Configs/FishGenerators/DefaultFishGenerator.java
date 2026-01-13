@@ -13,17 +13,13 @@ import java.util.*;
 public  class DefaultFishGenerator implements IFishGenerator {
     @Override
     public Fish generate(FishingContext context) {
-        context = null;
         FishRarity rarity = LuckUtil.pickTheWinner(context.location());
         List<FishType> potentialFishList = new ArrayList<>();
         for (FishType type : FishType.values()) {
             if (type.getRarity().equals(rarity))
                 potentialFishList.add(type);
         }
-        int randomIndex = Math.toIntExact(
-                Math.round(
-                        Math.random() * potentialFishList.size()
-                ));
+        int randomIndex = (int) (Math.random() * potentialFishList.size());
         return potentialFishList.get(randomIndex).createFish();
 
     }

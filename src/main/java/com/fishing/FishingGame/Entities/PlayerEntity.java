@@ -1,11 +1,13 @@
 package com.fishing.FishingGame.Entities;
 
 import com.fishing.FishingGame.Domain.Player;
+import com.fishing.FishingGame.Interfaces.IItem;
+import com.fishing.FishingGame.Mappers.ItemMapper;
+import com.fishing.FishingGame.Mappers.UniversalItemMapper;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Table(name = "players")
 @Entity
@@ -18,7 +20,7 @@ public class PlayerEntity {
     private UserEntity user;
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ItemEntity> inventory = new ArrayList<>();
-    @OneToOne(optional = true,cascade = CascadeType.ALL)
+    @OneToOne(optional = true)
     @JoinColumn(name = "current_rod_id", referencedColumnName = "id")
     private ItemEntity currentRod;
     @Column(name = "current_location_id")
@@ -80,12 +82,52 @@ public class PlayerEntity {
     public double getMoney() {
         return money;
     }
+    public void syncInventory(List<IItem> domainItems, UniversalItemMapper itemMapper) {
+        if (domainItems == null) {
+            this.inventory.clear();
+            return;
+        }
+
+        // 1. Собираем ID предметов, которые должны остаться
+        Set<Long> domainIds = domainItems.stream()
+                .map(IItem::getId)
+                .filter(java.util.Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        // 2. Удаляем из коллекции только те сущности, которых больше нет в домене
+        // Благодаря orphanRemoval = true, Hibernate сам сделает DELETE этих строк
+        this.inventory.removeIf(item -> item.getId() != null && !domainIds.contains(item.getId()));
+
+        // 3. Обновляем существующие или добавляем новые
+        for (IItem domain : domainItems) {
+            if (domain.getId() != null) {
+                // Ищем уже существующий элемент в текущей коллекции
+                this.inventory.stream()
+                        .filter(existing -> domain.getId().equals(existing.getId()))
+                        .findFirst()
+                        .ifPresent(existing -> itemMapper.updateEntity(existing, domain));
+            } else {
+                // Создаем новый, если ID нет
+                ItemEntity newEntity = new ItemEntity();
+                itemMapper.updateEntity(newEntity, domain);
+                newEntity.setPlayer(this);
+                this.inventory.add(newEntity);
+            }
+        }
+    }
 
     public List<ItemEntity> getInventory() {
         return inventory;
     }
+    public void addItem(ItemEntity item) {
+        if (this.inventory == null) {
+            this.inventory = new ArrayList<>();
+        }
+        this.inventory.add(item);
+        item.setPlayer(this); // Это заполнит тот самый UUID в логах
+    }
 
-    public void setInventory(List<ItemEntity> inventory) {
+    private void setInventory(List<ItemEntity> inventory) {
         this.inventory = inventory;
     }
 

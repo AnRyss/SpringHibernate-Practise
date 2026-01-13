@@ -8,42 +8,30 @@ import jakarta.persistence.Embeddable;
 import java.util.Objects;
 
 
-public record Fish(
-        String name,
-        double size,
-        FishRarity rarity,
-        double cost)
-    implements IItem
-     {
+public class Fish extends PhysicalItem {
+    private double size;
+    private FishRarity rarity;
+    private double cost;
+
+
+    public Fish() {}
+@Override
+public String getName(){
+        return super.getName();
+}
     public Fish(String name, double size, FishRarity rarity, double cost) {
-        this.name = name;
+        super.setName(name);
         this.size = size;
         this.rarity = rarity;
         this.cost = cost;
-
-
+    }
+    @Override
+    public ItemType getType() {
+        return ItemType.Fish;
     }
 
-         @Override
-         public String getName() {
-             return name;
-         }
+    public double getSize() { return size; }
+    public FishRarity getRarity() { return rarity; }
+    public double getCost() { return cost; }
 
-         @Override
-         public ItemType getType() {
-             return ItemType.Fish;
-         }
-
-         @Override
-         public boolean equals(Object o) {
-             if (o == null || getClass() != o.getClass()) return false;
-             Fish fish = (Fish) o;
-             return Double.compare(size, fish.size) == 0 && Double.compare(cost, fish.cost) == 0 && Objects.equals(name, fish.name) && rarity == fish.rarity;
-         }
-
-         @Override
-         public int hashCode() {
-             return Objects.hash(name, size, rarity, cost);
-         }
-     }
-
+}

@@ -11,10 +11,10 @@ import com.fishing.FishingGame.Interfaces.IItem;
 import java.util.List;
 
 public record PlayerDto(
-        double luck,
+        Double luck,
         Rod currentRod,
         AbstractLocation currentLocation,
-        double money,
+        Double money,
         List<IItem> inventory
 ) {
 

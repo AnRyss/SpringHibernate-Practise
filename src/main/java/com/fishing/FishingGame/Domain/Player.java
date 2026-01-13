@@ -42,7 +42,7 @@ public class Player {
     }
 
     public void sellFish() {
-        double totalProfit = inventory.getFishes().stream().mapToDouble(Fish::cost).sum();
+        double totalProfit = inventory.getFishes().stream().mapToDouble(Fish::getCost).sum();
         inventory.getItems().removeIf(item -> item instanceof Fish);
         this.money += totalProfit;
     }
@@ -77,7 +77,7 @@ public class Player {
         this.inventory = new PlayerInventory();
         this.luck = 1.0;
         this.currentLocation = new StartLocation();
-        this.currentLocation = null;
+
     }
 
     public static Player Beginner() {
