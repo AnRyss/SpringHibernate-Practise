@@ -1,9 +1,7 @@
 package com.fishing.FishingGame.Domain.Items;
 
 import com.fishing.FishingGame.Interfaces.IItem;
-import com.fishing.FishingGame.enums.ItemType;
 
-import java.util.Map;
 
 public abstract class PhysicalItem implements IItem {
     private String name;

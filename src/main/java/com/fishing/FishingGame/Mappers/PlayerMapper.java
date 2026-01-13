@@ -19,15 +19,18 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = {UniversalItemMapper.class, LocationFactory.class})
 public abstract class PlayerMapper {
-
     protected  UniversalItemMapper itemMapper;
-
     protected  LocationFactory locationFactory;
+
+    public PlayerMapper(){
+
+    }
     @Autowired
-    protected PlayerMapper(UniversalItemMapper itemMapper, LocationFactory locationFactory) {
-        this.itemMapper = itemMapper;
+    public PlayerMapper(UniversalItemMapper universalItemMapper,LocationFactory locationFactory){
+        this.itemMapper = universalItemMapper;
         this.locationFactory = locationFactory;
     }
+
 
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "inventory", ignore = true)

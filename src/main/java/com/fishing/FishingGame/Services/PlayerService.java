@@ -38,8 +38,7 @@ public class PlayerService {
     }
 
     private Player createProfile() {
-        Player pl = Player.Beginner();
-        return pl;
+        return Player.Beginner();
     }
 
     @Transactional

@@ -82,32 +82,29 @@ public class PlayerEntity {
     public double getMoney() {
         return money;
     }
+
     public void syncInventory(List<IItem> domainItems, UniversalItemMapper itemMapper) {
         if (domainItems == null) {
             this.inventory.clear();
             return;
         }
-
-        // 1. Собираем ID предметов, которые должны остаться
         Set<Long> domainIds = domainItems.stream()
                 .map(IItem::getId)
                 .filter(java.util.Objects::nonNull)
                 .collect(Collectors.toSet());
 
-        // 2. Удаляем из коллекции только те сущности, которых больше нет в домене
-        // Благодаря orphanRemoval = true, Hibernate сам сделает DELETE этих строк
         this.inventory.removeIf(item -> item.getId() != null && !domainIds.contains(item.getId()));
 
-        // 3. Обновляем существующие или добавляем новые
+
         for (IItem domain : domainItems) {
             if (domain.getId() != null) {
-                // Ищем уже существующий элемент в текущей коллекции
+
                 this.inventory.stream()
                         .filter(existing -> domain.getId().equals(existing.getId()))
                         .findFirst()
                         .ifPresent(existing -> itemMapper.updateEntity(existing, domain));
             } else {
-                // Создаем новый, если ID нет
+
                 ItemEntity newEntity = new ItemEntity();
                 itemMapper.updateEntity(newEntity, domain);
                 newEntity.setPlayer(this);
@@ -119,16 +116,20 @@ public class PlayerEntity {
     public List<ItemEntity> getInventory() {
         return inventory;
     }
+
     public void addItem(ItemEntity item) {
         if (this.inventory == null) {
             this.inventory = new ArrayList<>();
         }
         this.inventory.add(item);
-        item.setPlayer(this); // Это заполнит тот самый UUID в логах
+        item.setPlayer(this);
     }
 
     private void setInventory(List<ItemEntity> inventory) {
         this.inventory = inventory;
+        for (ItemEntity item: inventory){
+            item.setPlayer(this);
+        }
     }
 
     public UserEntity getUser() {

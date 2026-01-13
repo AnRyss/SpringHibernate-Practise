@@ -34,10 +34,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // 1. Сначала разрешаем публичные пути
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/auth/**","/error").permitAll()
                         // 2. Затем защищенные пути
                         .requestMatchers("/profiles/**").authenticated()
-                        .requestMatchers("/auth/**", "/error").permitAll()
                         // 3. И в самом конце — всё остальное
                         .anyRequest().authenticated()
                 )

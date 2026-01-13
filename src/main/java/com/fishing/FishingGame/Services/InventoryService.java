@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class InventoryService {
     private final PlayerService playerService;
-    public InventoryService(PlayerService playerService, PlayerMapper playerMapper) {
+    public InventoryService(PlayerService playerService) {
         this.playerService = playerService;
     }
     @Transactional

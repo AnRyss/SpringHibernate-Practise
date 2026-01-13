@@ -13,7 +13,7 @@ public class ShopService {
 
     private final PlayerService playerService;
 
-    public ShopService(PlayerRepository repository, PlayerMapper playerMapper, PlayerService playerService) {
+    public ShopService(PlayerService playerService) {
         this.playerService = playerService;
     }
 

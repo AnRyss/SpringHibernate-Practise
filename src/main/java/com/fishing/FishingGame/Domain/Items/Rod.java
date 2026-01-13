@@ -1,13 +1,7 @@
 package com.fishing.FishingGame.Domain.Items;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fishing.FishingGame.Interfaces.IItem;
 import com.fishing.FishingGame.enums.ItemType;
 import com.fishing.FishingGame.enums.RodTier;
-import jakarta.persistence.Embeddable;
-
-import java.util.Map;
 import java.util.Objects;
 
 
