@@ -1,9 +1,7 @@
 package com.fishing.FishingGame.Entities;
 
 import com.fishing.FishingGame.Domain.Player;
-import com.fishing.FishingGame.Interfaces.IItem;
-import com.fishing.FishingGame.Mappers.ItemMapper;
-import com.fishing.FishingGame.Mappers.UniversalItemMapper;
+import com.fishing.FishingGame.Domain.Items.IItem;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -72,35 +70,6 @@ public class PlayerEntity {
         return money;
     }
 
-    public void syncInventory(List<IItem> domainItems, UniversalItemMapper itemMapper) {
-        if (domainItems == null) {
-            this.inventory.clear();
-            return;
-        }
-        Set<Long> domainIds = domainItems.stream()
-                .map(IItem::getId)
-                .filter(java.util.Objects::nonNull)
-                .collect(Collectors.toSet());
-
-        this.inventory.removeIf(item -> item.getId() != null && !domainIds.contains(item.getId()));
-
-
-        for (IItem domain : domainItems) {
-            if (domain.getId() != null) {
-
-                this.inventory.stream()
-                        .filter(existing -> domain.getId().equals(existing.getId()))
-                        .findFirst()
-                        .ifPresent(existing -> itemMapper.updateEntity(existing, domain));
-            } else {
-
-                ItemEntity newEntity = new ItemEntity();
-                itemMapper.updateEntity(newEntity, domain);
-                newEntity.setPlayer(this);
-                this.inventory.add(newEntity);
-            }
-        }
-    }
 
     public List<ItemEntity> getInventory() {
         return inventory;

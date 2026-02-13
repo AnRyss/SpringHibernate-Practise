@@ -1,19 +1,15 @@
 package com.fishing.FishingGame.Domain;
 
 import com.fishing.FishingGame.Domain.FishLocations.AbstractLocation;
-import com.fishing.FishingGame.Domain.FishLocations.LocationFactory;
 import com.fishing.FishingGame.Domain.FishLocations.StartLocation;
 import com.fishing.FishingGame.Domain.Items.Fish;
 import com.fishing.FishingGame.Domain.Items.Passes.AbstractPass;
 import com.fishing.FishingGame.Domain.Items.Rod;
 import com.fishing.FishingGame.Dto.FishingContext;
-import com.fishing.FishingGame.Interfaces.IItem;
 import com.fishing.FishingGame.exceptions.InShortOfMoneyException;
-import com.fishing.FishingGame.exceptions.ItemNotInInventoryException;
 import com.fishing.FishingGame.exceptions.RodUpgradeException;
 import com.fishing.FishingGame.enums.RodTier;
 
-import java.util.List;
 import java.util.UUID;
 
 public class Player {
@@ -21,6 +17,8 @@ public class Player {
     private Double luck;
     private PlayerInventory inventory;
     private Double money;
+
+
 
 
     public FishingContext getFishingContext(){
@@ -73,9 +71,12 @@ public class Player {
     public Player(UUID uuid) {
         this.uuid = uuid;
         this.money = (double) 0;
+        Rod rod = new Rod(RodTier.COMMON);
+        inventory.addItem(rod);
         AbstractLocation startLocation = new StartLocation();
         this.inventory = new PlayerInventory().addItem(startLocation);
         this.luck = 1.0;
+        inventory.equip(rod);
         inventory.equip(startLocation);
 
     }

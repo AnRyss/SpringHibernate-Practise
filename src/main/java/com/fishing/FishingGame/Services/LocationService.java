@@ -20,7 +20,7 @@ public class LocationService {
         this.locationFactory = locationFactory;
         this.passFactory = passFactory;
     }
-    public PlayerDto setCurrentLocation(int id){
+    public PlayerDto setCurrentLocation(Long id){
         AbstractLocation location = locationFactory.getLocation(id);
         Player playerDomain =  playerService.getCurrentPlayer();
         if (!(passFactory.getPass(location.getName()) instanceof LocationPass pass))

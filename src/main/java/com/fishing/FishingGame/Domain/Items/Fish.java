@@ -4,14 +4,10 @@ import com.fishing.FishingGame.enums.FishRarity;
 import com.fishing.FishingGame.enums.ItemType;
 
 
-public class Fish extends PhysicalItem {
-    private ItemAttribute size;
-    private FishRarity rarity;
-    private ItemAttribute cost;
-
-
-    public Fish() {
-    }
+public class Fish extends IItem {
+    private ItemAttribute size = new ItemAttribute();
+    private ItemAttribute rarity = new ItemAttribute();
+    private ItemAttribute cost = new ItemAttribute();
 
     @Override
     public String getName() {
@@ -19,12 +15,17 @@ public class Fish extends PhysicalItem {
     }
 
     public Fish(String name, double size, FishRarity rarity, double cost) {
+        super(ItemType.Fish,true);
         super.setName(name);
         this.size.setName("size");
         this.size.setValue(size);
         this.cost.setName("cost");
-        this.rarity = rarity;
+        this.rarity.setName("rarity");
+        this.rarity.setStringValue(rarity.name());
         this.cost.setValue(cost);
+        super.addAttribute(this.size);
+        super.addAttribute(this.rarity);
+        super.addAttribute(this.cost);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class Fish extends PhysicalItem {
     }
 
     public FishRarity getRarity() {
-        return rarity;
+        return FishRarity.valueOf(super.getAttributeByName("rarity").getStringValue());
     }
 
     public double getCost() {

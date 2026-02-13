@@ -2,8 +2,7 @@ package com.fishing.FishingGame.Services;
 
 import com.fishing.FishingGame.Domain.Player;
 import com.fishing.FishingGame.Dto.PlayerDto;
-import com.fishing.FishingGame.Interfaces.IItem;
-import com.fishing.FishingGame.Mappers.PlayerMapper;
+import com.fishing.FishingGame.Domain.Items.IItem;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

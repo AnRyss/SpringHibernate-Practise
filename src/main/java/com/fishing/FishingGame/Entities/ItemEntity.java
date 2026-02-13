@@ -1,11 +1,13 @@
 package com.fishing.FishingGame.Entities;
 
+import com.fishing.FishingGame.Domain.Items.ItemAttribute;
 import com.fishing.FishingGame.enums.ItemType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -32,6 +34,16 @@ public class ItemEntity {
     @Column(nullable = false)
     private Boolean isEquipped;
 
+    public List<ItemAttributeEntity> getAttributeList() {
+        return attributeList;
+    }
+
+    public void setAttributeList(List<ItemAttributeEntity> attributeList) {
+        this.attributeList = attributeList;
+    }
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ItemAttributeEntity> attributeList;
     public Boolean getEquipped() {
         return isEquipped;
     }

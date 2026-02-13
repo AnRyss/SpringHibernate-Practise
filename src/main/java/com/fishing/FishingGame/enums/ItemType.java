@@ -2,8 +2,7 @@ package com.fishing.FishingGame.enums;
 
 import com.fishing.FishingGame.Domain.FishLocations.AbstractLocation;
 import com.fishing.FishingGame.Domain.Items.ItemAttribute;
-import com.fishing.FishingGame.Domain.Items.Rod;
-import com.fishing.FishingGame.Interfaces.IItem;
+import com.fishing.FishingGame.Domain.Items.IItem;
 
 public enum ItemType {
     Fish(com.fishing.FishingGame.Domain.Items.Fish.class),

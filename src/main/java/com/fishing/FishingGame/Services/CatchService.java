@@ -38,7 +38,7 @@ public class CatchService {
 
     public String startCatch() {
         Player player = playerService.getCurrentPlayer();
-        if (!player.getCurrentRod().isFishable())
+        if (!player.getInventory().getEquippedRod().isFishable())
             return "Удочка сломана, надо починить";
         if (activeFishers.putIfAbsent(player.getUuid(), System.currentTimeMillis()) != null)
            throw new IllegalMultipleRequest("Рыбалка уже идет для " + player.getUuid());

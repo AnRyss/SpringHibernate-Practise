@@ -8,13 +8,13 @@ import java.util.stream.Collectors;
 
 @Component
 public final class LocationFactory {
-    private final Map<Integer, AbstractLocation> locations;
+    private final Map<Long, AbstractLocation> locations;
 
     public LocationFactory(List<AbstractLocation> locationList) {
         this.locations = locationList.stream()
                 .collect(Collectors.toMap(AbstractLocation::getId, l -> l));
     }
-    public AbstractLocation getLocation(int id) {
+    public AbstractLocation getLocation(Long id) {
         AbstractLocation location = locations.get(id);
         if (location == null) {
             throw new IllegalArgumentException("Локация с ID " + id + " не найдена");

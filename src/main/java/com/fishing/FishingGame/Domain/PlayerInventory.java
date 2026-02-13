@@ -3,13 +3,11 @@ package com.fishing.FishingGame.Domain;
 import com.fishing.FishingGame.Domain.FishLocations.AbstractLocation;
 import com.fishing.FishingGame.Domain.Items.Fish;
 import com.fishing.FishingGame.Domain.Items.Passes.AbstractPass;
-import com.fishing.FishingGame.Domain.Items.Passes.LocationPass;
 import com.fishing.FishingGame.Domain.Items.Rod;
 import com.fishing.FishingGame.Interfaces.IInventory;
-import com.fishing.FishingGame.Interfaces.IItem;
+import com.fishing.FishingGame.Domain.Items.IItem;
 import com.fishing.FishingGame.enums.ItemType;
 import com.fishing.FishingGame.exceptions.ItemNotInInventoryException;
-import org.hibernate.boot.internal.Abstract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,11 +117,6 @@ public class PlayerInventory implements IInventory {
         return items.get(index);
     }
 
-    @Override
-    public PlayerInventory setItems(List<IItem> items) {
-        this.items = items;
-        return this;
-    }
 
     @Override
     public PlayerInventory addItem(IItem item) {

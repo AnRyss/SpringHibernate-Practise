@@ -38,7 +38,7 @@ public class PlayerService {
     }
 
     private Player createProfile() {
-        return Player.Beginner();
+        return new Player(UUID.randomUUID());
     }
 
     @Transactional

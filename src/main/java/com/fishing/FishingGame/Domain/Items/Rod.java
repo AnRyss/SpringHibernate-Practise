@@ -5,26 +5,28 @@ import com.fishing.FishingGame.enums.RodTier;
 import java.util.Objects;
 
 
-public class Rod extends PhysicalItem {
-    private RodTier rodTier;
+public class Rod extends IItem {
+    private ItemAttribute rodTier;
     private ItemAttribute durability;
     public Rod(RodTier rodTier) {
-        this.rodTier = rodTier;
+        super(ItemType.Rod,true);
+        this.rodTier.setName("rodTier");
+        this.rodTier.setStringValue(rodTier.name());
         this.durability.setValue(100.0);
         this.durability.setName("durability");
         super.setName(rodTier.name() + " удочка");
+        super.addAttribute(this.rodTier);
+        super.addAttribute(this.durability);
+
     }
-
-    private Rod() {
-    }
-
-
     public RodTier getRodtier() {
-        return rodTier;
+        return RodTier.valueOf(super.getAttributeByName("rodTier").getStringValue());
     }
 
     public void setRodtier(RodTier rodTier) {
-        this.rodTier = rodTier;
+        super.getAttributeByName("rodTier").setStringValue(rodTier.name());
+        this.rodTier =  super.getAttributeByName("rodTier");
+
     }
 
     public double getDurability() {
@@ -42,7 +44,7 @@ public class Rod extends PhysicalItem {
 
     @Override
     public String getName() {
-        return rodTier.name() + " удочка";
+        return rodTier.getName()+ " удочка";
     }
 
     @Override
