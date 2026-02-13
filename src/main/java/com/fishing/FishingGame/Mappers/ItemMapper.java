@@ -1,5 +1,6 @@
 package com.fishing.FishingGame.Mappers;
 
+import com.fishing.FishingGame.Domain.Items.PhysicalItem;
 import com.fishing.FishingGame.Entities.ItemEntity;
 import com.fishing.FishingGame.Interfaces.IItem;
 import org.mapstruct.Mapper;
@@ -8,8 +9,7 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring", uses = {UniversalItemMapper.class})
-
+@Mapper
 public abstract class ItemMapper {
 
     protected UniversalItemMapper universalMapper;
@@ -17,25 +17,17 @@ public abstract class ItemMapper {
     protected ItemMapper() {
     }
 
-    @Autowired
-    protected ItemMapper(UniversalItemMapper universalMapper) {
-        this.universalMapper = universalMapper;
-    }
-
-    public ItemEntity toEntity(IItem domain) {
-        if (domain == null) return null;
-        ItemEntity entity = new ItemEntity();
-        updateEntity(entity, domain);
-        return entity;
-    }
+    public abstract ItemEntity toEntity(IItem domain);
 
 
-    public void updateEntity(@MappingTarget ItemEntity entity, IItem domain) {
-        if (domain == null) return;
-        universalMapper.updateEntity(entity, domain);
-    }
 
-    public IItem toDomain(ItemEntity entity) {
-        return universalMapper.toDomain(entity);
-    }
+
+    public abstract void updateEntity(@MappingTarget ItemEntity entity, IItem domain);
+
+    public  IItem toDomain(ItemEntity entity){
+        IItem mappedItem = null;
+        entity.getPhysical() ? mappedItem = new PhysicalItem() {
+        }
+      if (entity.getPhysical())
+    };
 }

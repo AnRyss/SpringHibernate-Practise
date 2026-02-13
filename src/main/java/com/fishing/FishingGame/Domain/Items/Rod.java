@@ -7,10 +7,11 @@ import java.util.Objects;
 
 public class Rod extends PhysicalItem {
     private RodTier rodTier;
-    private double durability;
+    private ItemAttribute durability;
     public Rod(RodTier rodTier) {
         this.rodTier = rodTier;
-        this.durability = 100;
+        this.durability.setValue(100.0);
+        this.durability.setName("durability");
         super.setName(rodTier.name() + " удочка");
     }
 
@@ -27,11 +28,11 @@ public class Rod extends PhysicalItem {
     }
 
     public double getDurability() {
-        return durability;
+        return durability.getValue();
     }
 
     public void setDurability(double durability) {
-        this.durability = durability;
+        this.durability.setValue(durability);
     }
 
     public boolean isFishable() {
@@ -49,12 +50,7 @@ public class Rod extends PhysicalItem {
         return ItemType.Rod;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Rod rod = (Rod) o;
-        return Double.compare(durability, rod.durability) == 0 && rodTier == rod.rodTier;
-    }
+
 
     @Override
     public int hashCode() {

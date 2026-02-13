@@ -30,24 +30,38 @@ public class ItemEntity {
     @Enumerated(EnumType.STRING)
     private ItemType type;
     @Column(nullable = false)
+    private Boolean isEquipped;
+
+    public Boolean getEquipped() {
+        return isEquipped;
+    }
+
+    public void setEquipped(Boolean equipped) {
+        isEquipped = equipped;
+    }
+
+    public Boolean getPhysical() {
+        return isPhysical;
+    }
+
+    public void setPhysical(Boolean physical) {
+        isPhysical = physical;
+    }
+
+    private Boolean isPhysical;
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id", referencedColumnName = "uuid")
     private PlayerEntity player;
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> properties = new HashMap<>();
 
-    public Map<String, Object> getProperties() {
-        return properties;
-    }
+
+
 
     public ItemType getType() {
         return type;
     }
 
-    public void setProperties(Map<String, Object> properties) {
-        this.properties = properties;
-    }
+
 
     public void setType(ItemType type) {
         this.type = type;

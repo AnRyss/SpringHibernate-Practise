@@ -19,31 +19,27 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = {UniversalItemMapper.class, LocationFactory.class})
 public abstract class PlayerMapper {
-    protected  UniversalItemMapper itemMapper;
-    protected  LocationFactory locationFactory;
+    protected UniversalItemMapper itemMapper;
+    protected LocationFactory locationFactory;
 
-    public PlayerMapper(){
+    public PlayerMapper() {
 
     }
+
     @Autowired
-    public PlayerMapper(UniversalItemMapper universalItemMapper,LocationFactory locationFactory){
+    public PlayerMapper(UniversalItemMapper universalItemMapper, LocationFactory locationFactory) {
         this.itemMapper = universalItemMapper;
         this.locationFactory = locationFactory;
     }
 
 
     @Mapping(target = "user", ignore = true)
-    @Mapping(target = "inventory", ignore = true)
-    @Mapping(target = "currentLocationId", source = "currentLocation.id")
-    @Mapping(target = "currentRod", ignore = true)
     public abstract void updateEntity(@MappingTarget PlayerEntity entity, Player domain);
 
     @Mapping(target = "inventory", source = "inventory.items")
     public abstract PlayerDto toDto(Player player);
 
-    @Mapping(target = "currentLocation", expression = "java(locationFactory.getLocation(entity.getCurrentLocationId()))")
     @Mapping(target = "inventory", expression = "java(entity.getInventory().stream().map(itemMapper::toDomain).toList())")
-    @Mapping(target = "currentRod", expression = "java(entity.getCurrentRod() != null ? (com.fishing.FishingGame.Domain.Items.Rod) itemMapper.toDomain(entity.getCurrentRod()) : null)")
     public abstract PlayerDto toDto(PlayerEntity entity);
 
     public PlayerEntity toNewEntity(Player domain) {
@@ -51,52 +47,7 @@ public abstract class PlayerMapper {
         updateEntity(playerEntity, domain);
         return playerEntity;
     }
-
-    public Player toDomain(PlayerEntity entity) {
-        if (entity == null) return null;
+    public abstract Player toDomain(PlayerEntity entity);
 
 
-        List<IItem> domainItems = entity.getInventory().stream()
-                .map(itemMapper::toDomain)
-                .collect(Collectors.toList());
-
-
-        Player player = new Player(entity.getUuid());
-        player.setLuck(entity.getLuck());
-        player.setMoney(entity.getMoney());
-        player.setInventory(new PlayerInventory(domainItems));
-
-
-        if (entity.getCurrentRod() != null) {
-            Long rodId = entity.getCurrentRod().getId();
-            domainItems.stream()
-                    .filter(item -> item instanceof Rod && item.getId().equals(rodId))
-                    .findFirst()
-                    .map(item -> (Rod) item)
-                    .ifPresent(player::setCurrentRod);
-        }
-
-        return player;
-
-    }
-
-    @AfterMapping
-    protected void linkRelations(@MappingTarget PlayerEntity entity, Player domain) {
-
-        entity.syncInventory(domain.getInventory().getItems(), itemMapper);
-
-
-        if (domain.getCurrentRod() != null) {
-            Long rodId = domain.getCurrentRod().getId();
-
-            ItemEntity rodEntity = entity.getInventory().stream()
-                    .filter(item -> item.getId() != null && item.getId().equals(rodId))
-                    .findFirst()
-                    .orElse(null);
-
-            entity.setCurrentRod(rodEntity);
-        } else {
-            entity.setCurrentRod(null);
-        }
-    }
 }

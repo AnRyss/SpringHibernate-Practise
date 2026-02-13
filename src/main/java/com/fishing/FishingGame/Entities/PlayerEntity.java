@@ -20,27 +20,16 @@ public class PlayerEntity {
     private UserEntity user;
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ItemEntity> inventory = new ArrayList<>();
-    @OneToOne(optional = true)
-    @JoinColumn(name = "current_rod_id", referencedColumnName = "id")
-    private ItemEntity currentRod;
-    @Column(name = "current_location_id")
-    private Integer currentLocationId;
 
-    public ItemEntity getCurrentRod() {
-        return currentRod;
+    public List<ItemEntity> getEquipment() {
+        return equipment;
     }
 
-    public void setCurrentRod(ItemEntity currentRod) {
-        this.currentRod = currentRod;
+    public void setEquipment(List<ItemEntity> equipment) {
+        this.equipment = equipment;
     }
 
-    public Integer getCurrentLocationId() {
-        return currentLocationId;
-    }
-
-    public void setCurrentLocationId(int currentLocationId) {
-        this.currentLocationId = currentLocationId;
-    }
+    private List<ItemEntity> equipment = new ArrayList<>();
 
 
     public PlayerEntity() {

@@ -9,9 +9,11 @@ import com.fishing.FishingGame.Domain.Items.Rod;
 import com.fishing.FishingGame.Dto.FishingContext;
 import com.fishing.FishingGame.Interfaces.IItem;
 import com.fishing.FishingGame.exceptions.InShortOfMoneyException;
+import com.fishing.FishingGame.exceptions.ItemNotInInventoryException;
 import com.fishing.FishingGame.exceptions.RodUpgradeException;
 import com.fishing.FishingGame.enums.RodTier;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Player {
@@ -19,23 +21,20 @@ public class Player {
     private Double luck;
     private PlayerInventory inventory;
     private Double money;
-    private AbstractLocation currentLocation;
-    private Rod currentRod;
+
+
     public FishingContext getFishingContext(){
         return new FishingContext(getCurrentLocation(),this,getLuck());
     }
-    public Rod getCurrentRod() {
-        return  currentRod;
-    }
 
     public void upgradeRod() {
-        RodTier nextTier = getCurrentRod().getRodtier().getNext().orElseThrow(() -> new RodUpgradeException(uuid));
+        RodTier nextTier = inventory.getEquippedRod().getRodtier().getNext().orElseThrow(() -> new RodUpgradeException(uuid));
         double moneyNeeded = nextTier.getPrice();
         if (moneyNeeded > getMoney())
             throw new InShortOfMoneyException(uuid, getMoney());
         Rod newRod = new Rod(nextTier);
         getInventory().addItem(newRod);
-        getInventory().removeItem(getCurrentRod());
+        getInventory().removeItem(inventory.getEquippedRod());
         setCurrentRod(newRod);
         setMoney(getMoney() - moneyNeeded);
 
@@ -51,7 +50,7 @@ public class Player {
     }
 
     public void setCurrentRod(Rod currentRod) {
-        this.currentRod = currentRod;
+        this.inventory.equip(currentRod);
     }
 
 
@@ -64,34 +63,24 @@ public class Player {
     }
 
     public AbstractLocation getCurrentLocation() {
-        return currentLocation;
+        return inventory.getEquippedLocation();
     }
 
     public void setCurrentLocation(AbstractLocation currentLocation) {
-        this.currentLocation = currentLocation;
+       inventory.equip(currentLocation);
     }
 
     public Player(UUID uuid) {
         this.uuid = uuid;
         this.money = (double) 0;
-        this.inventory = new PlayerInventory();
+        AbstractLocation startLocation = new StartLocation();
+        this.inventory = new PlayerInventory().addItem(startLocation);
         this.luck = 1.0;
-        this.currentLocation = new StartLocation();
+        inventory.equip(startLocation);
 
     }
 
-    public static Player Beginner() {
-        Rod defRod = new Rod(RodTier.COMMON);
-        Player player = new Player(
-                UUID.randomUUID(),
-                1,
-                0,
-                new PlayerInventory().addItem(defRod)
-        );
-        player.setCurrentRod(defRod);
-        player.setCurrentLocation(new StartLocation());
-        return player;
-    }
+
 
     private Player(UUID uuid, double luck, double money, PlayerInventory inventory) {
 

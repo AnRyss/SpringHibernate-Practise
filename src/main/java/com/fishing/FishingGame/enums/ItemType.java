@@ -1,5 +1,7 @@
 package com.fishing.FishingGame.enums;
 
+import com.fishing.FishingGame.Domain.FishLocations.AbstractLocation;
+import com.fishing.FishingGame.Domain.Items.ItemAttribute;
 import com.fishing.FishingGame.Domain.Items.Rod;
 import com.fishing.FishingGame.Interfaces.IItem;
 
@@ -7,6 +9,8 @@ public enum ItemType {
     Fish(com.fishing.FishingGame.Domain.Items.Fish.class),
     Clothes(null),
     Rod(com.fishing.FishingGame.Domain.Items.Rod.class),
+    Attribute(ItemAttribute.class),
+    Location(AbstractLocation.class),
     Pass(com.fishing.FishingGame.Domain.Items.Passes.LocationPass.class);
     final Class<?> referencedClass;
 

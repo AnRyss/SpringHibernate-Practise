@@ -5,9 +5,9 @@ import com.fishing.FishingGame.enums.ItemType;
 
 
 public class Fish extends PhysicalItem {
-    private double size;
+    private ItemAttribute size;
     private FishRarity rarity;
-    private double cost;
+    private ItemAttribute cost;
 
 
     public Fish() {
@@ -20,9 +20,11 @@ public class Fish extends PhysicalItem {
 
     public Fish(String name, double size, FishRarity rarity, double cost) {
         super.setName(name);
-        this.size = size;
+        this.size.setName("size");
+        this.size.setValue(size);
+        this.cost.setName("cost");
         this.rarity = rarity;
-        this.cost = cost;
+        this.cost.setValue(cost);
     }
 
     @Override
@@ -31,7 +33,7 @@ public class Fish extends PhysicalItem {
     }
 
     public double getSize() {
-        return size;
+        return size.getValue();
     }
 
     public FishRarity getRarity() {
@@ -39,7 +41,7 @@ public class Fish extends PhysicalItem {
     }
 
     public double getCost() {
-        return cost;
+        return cost.getValue();
     }
 
 }
